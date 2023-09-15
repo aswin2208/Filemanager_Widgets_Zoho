@@ -1,0 +1,13 @@
+{
+  "service": "CREATOR",
+  "cspDomains": {
+    "connect-src": [
+      "wss://*.zohopublic.com",
+      "https://*.zoho.com",
+      "https://*.zohopublic.com",
+      "https://*.telerik.com"
+      
+      
+    ]
+  }
+}
