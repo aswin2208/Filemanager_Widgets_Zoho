@@ -722,7 +722,7 @@
 
 
                                     //////////////////////////////////////////////////////////////////////////////////////////////////    
-                                    const breadcrumbs = [];
+                                    var breadcrumbs = ["Home"];
                                     
                                     function ssupdateBreadcrumbss(folderName) {
                                         const folderIndex = breadcrumbs.indexOf(folderName);
@@ -742,21 +742,36 @@
                                             item.addEventListener('click', sshandleBreadcrumbClickss);
                                         });
                                     }
-
+                                     var clickedFolder;
                                     function sshandleBreadcrumbClickss(event) {
-                                        const clickedIndex = event.target.getAttribute('data-index');
-                                        const clickedFolder = breadcrumbs[clickedIndex];
-                                        // if(clickedIndex == '0')
-                                        // {
-                                        //     var fileManager = $("#filemanager").data("kendoFileManager");
-                                        //     fileManager.refresh();
-                                        //     fileManager.dataSource.data(gridData);
-                                        // }
-                                        // else
-                                        // {
+                                       const clickedIndex = event.target.getAttribute('data-index');
+                                         clickedFolder = breadcrumbs[clickedIndex];
+                                       
+                                         if(clickedFolder == 'Home')
+                                        {
+                                            
+                                           Homes();
+                                            
+                                           
+                                        }
+                                        else
+                                        {
                                         navigateToSubfolder(clickedFolder);
                                         uploadlogic(clickedFolder)
-                                        //}
+                                    }
+                                    }
+
+                                    function Homes()
+                                    {
+                                        //clickedFolder = null;
+                                        var fileManager = $("#filemanager").data("kendoFileManager");
+                                        fileManager.refresh();
+                                        fileManager.dataSource.data(gridData);
+                                        breadcrumbs.length = 0;
+                                        
+
+                                    
+
                                     }
 
                                     ///////////////
@@ -765,9 +780,9 @@
                                         //console.log("folderName",folderName)
                                         breadcrumbs.length = 0;
                                         
-
+                                        
                                         findParentFolders(output, folderName);
-
+                                        breadcrumbs.unshift("Home");
 
 
                                         breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
@@ -780,10 +795,10 @@
                                         //     item.addEventListener('click', handleBreadcrumbClick);
                                         // });
 
-                                        console.log("breadcrumbs", breadcrumbs)
+                                       // console.log("breadcrumbs", breadcrumbs)
                                         for (let i = 0; i < breadcrumbs.length; i++) {
                                             const breadcrumbValue = breadcrumbs[i];
-                                            var vpf = breadcrumbs[0];
+                                            var vpf = breadcrumbs[1];
                                             navigateToSubfolder(breadcrumbValue, vpf);
 
                                         }
@@ -820,6 +835,12 @@
                                         var folderName = $(this).find(".folder-name").text();
                                         uploadlogic(folderName);
                                         navigateToSubfolder(folderName);
+                                        if(clickedFolder == "Home")
+                                        {
+                                            clickedFolder = null;
+                                           breadcrumbs = ["Home"];
+                                            navigateToSubfolder(folderName,folderName);
+                                        }
 
                                     });
 
@@ -879,9 +900,12 @@
                                     }
 
                                     function navigateToSubfolder(folderName, vpf) {
+                                        // if(clickedFolder != 'Home')
+                                        // {
                                         showButton();
                                         hideupButton();
                                         var juju = vpf;
+                                       
                                         var subfolderDatas = {
                                             reportName: "Folder_Creation_Mapping_Widgets",
                                             criteria: "ID!=0" || "ID==0",
@@ -1131,7 +1155,39 @@
                                         }).catch(function (error) {
                                             console.error("API request error (Folder_Creation_Mapping_Widgets):", error);
                                         });
-                                    }
+                                     //}
+                                    // else
+                                    // {
+                                    //        console.log("ci",clickedFolder)
+                                    //         // clickedIndex = '1';
+                                    //         // // breadcrumbs.length = 0;
+                                    //         // // console.log("breadcrumbs in else",breadcrumbs)
+                                    //         // // folderName = null;
+                                    //         // // vpf = null;
+                                    //         // var fileManager = $("#filemanager").data("kendoFileManager");
+                                    //         // fileManager.refresh();
+                                    //         // fileManager.dataSource.data(gridData);
+                                    //         // $("#filemanager .k-filemanager-navigation").html(navigationHtml);
+                                    //         // $(".project-link, .level-link").click(function () {
+                                    //         // $(this).next(".subfolders").toggleClass("show");
+                                    //         //  if (event.target.tagName === 'A') {
+                                             
+                                    //         //  var allid1 = $(this).attr("id");
+                                    //         //  updateBreadcrumbs(allid1);
+                                    //         // //console.log(allid1)
+                                    //         // }
+                                           
+                                    // });
+                                    // clickedFolder = null;
+                                    // $("#filemanager").on("click", ".folder-link", function () {
+                                    //     var folderName = $(this).find(".folder-name").text();
+                                    //     uploadlogic(folderName);
+                                    //     navigateToSubfolder(folderName);
+                                    //      console.log("here folder",folderName)
+                                    // });
+                                            
+                                    // }
+                                }
 
 
 
