@@ -281,8 +281,8 @@
 
 <body>
     <div id="breadcrumbs-container" class="sticky"> 
-        <!-- <a id="breadcrumb-home-link" class="breadcrumb-home" href="#"> 
-                <i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i> </a>  -->
+        <a id="breadcrumb-home-link" class="breadcrumb-home" href="#"> 
+                <i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i> </a> 
             </div>
     <div class="header-right k-filemanager-header" style="display: flex;"> <a class="social group Group-button"> <svg
                 xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people"
@@ -1080,7 +1080,7 @@
                                                 if (widgetAdminResponse.code === 3000 || widgetAdminResponse.code != 3000) {
                                                     //showupButton();
                                                     var widgetAdminData = widgetAdminResponse.data;
-                                                    //console.log(widgetAdminData)
+                                                    console.log(widgetAdminData)
                                                     for (var z = 0; z < widgetAdminData.length; z++) {
                                                         var widgetAdminProject = widgetAdminData[z]["Project"]["display_value"];
                                                         var parentFolderValue = widgetAdminData[z]["Folder_Path.Folder"];
@@ -1101,7 +1101,7 @@
                                                                 for (var n = 0; n < ft.length; n++) {
                                                                     var fty = ft[n]["display_value"];
                                                                     filetype.push(fty);
-                                                                    //console.log(filetype)
+                                                                    console.log(filetype)
                                                                 }
                                                                 let filetypes = filetype[0].split(' / ')[1].trim();
                                                                 //console.log(filetypes)
