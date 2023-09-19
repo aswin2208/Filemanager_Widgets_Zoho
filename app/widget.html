@@ -764,6 +764,8 @@
                                     function Homes()
                                     {
                                         //clickedFolder = null;
+                                        breadcrumbs.length = 0;
+                                        breadcrumbsContainer.innerHTML = `<span class="breadcrumb-item active-breadcrumb" data-index="0"><i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i></span>`;
                                         var fileManager = $("#filemanager").data("kendoFileManager");
                                         fileManager.refresh();
                                         fileManager.dataSource.data(gridData);
