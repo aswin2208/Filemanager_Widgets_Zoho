@@ -269,7 +269,36 @@
             z-index: 100;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Styles for the icon */
+        .iconsss {
+            cursor: pointer;
+        }
+
+        /* Styles for the popup menu container */
+        .popup-menu {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        /* Styles for the popup menu items */
+        .popup-menu a {
+            padding: 10px 10px;
+            display: block;
+            text-align: left;
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* Change the color of menu items when hovering */
+        .popup-menu a:hover {
+            background-color: #ddd;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
@@ -577,7 +606,7 @@
                                         });
                                     }
                                    
-                                    console.log(JSON.stringify(output, null, 2))
+                                  //  console.log(JSON.stringify(output, null, 2))
                                     //console.log("griddata level1",gridData)
                                     var navigationHtml = '<ul id="custom-navigation">';
                                     for (var folder in output) {
@@ -1139,18 +1168,26 @@
                                                                 else {
                                                                     var icons = '<i class="fa fa-file" style="font-size:16px"></i>';
                                                                 }
+                                                                
                                                                 subfolderGridData.push({
-                                                                    type: icons,
-                                                                    name: widgetAdminData[z]["Document_Title"],
-                                                                    status: widgetAdminData[z]["Status"]["display_value"],
-                                                                    createdby: widgetAdminData[z]["Created_By"],
-                                                                    createddt: widgetAdminData[z]["Created_D_T"],
-                                                                    action: '<a href="javascript:void(0);" class="download-icon" data-index="' + widgetAdminData[z]["Document_Title"] + '"><i class="fa fa-download" style="font-size:15px;color:#29a3a3;margin-right: 10px;" title="Download"></i></a>' +
-                                                                        '<a href="javascript:void(0);" class="book-icon" data-index="' + widgetAdminData[z]["Document_Title"] + '"><i class="fas fa-book" style="font-size:15px;color:#0088cc;margin-right: 10px;" title="LOGS"></i></a>' +
-                                                                        '<a href="javascript:void(0);" class="comments-icon" data-index="' + widgetAdminData[z]["Document_Title"] + '"><i class="fas fa-comments" style="font-size:15px;color:#00A0AD;margin-right: 10px;" title="Comment Resolution Sheet"></i></a>' +
-                                                                        '<a href="javascript:void(0);" class="info-icon" data-index="' + widgetAdminData[z]["Document_Title"] + '"><i class="fa fa-info" style="font-size:15px;color:#5c8a8a;" title="Document Revision History"></i></a>'
-                                                                });
-        
+    type: icons,
+    name: widgetAdminData[z]["Document_Title"],
+    status: widgetAdminData[z]["Status"]["display_value"],
+    createdby: widgetAdminData[z]["Created_By"],
+    createddt: widgetAdminData[z]["Created_D_T"],
+    action: `
+        <span class="iconsss" onclick="togglePopupMenu(this)">☰</span>
+        <div id="popupMenu" class="popup-menu">
+            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;">  Download </i></a>
+            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;">  LOGS </i></a>
+            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;">  Comment Resolution Sheet </i></a>
+            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;">  Document Revision History </i></a>
+        </div>
+    `
+});
+
+                                                                
+                                                               
                                                             }
         
                                                         }
@@ -1213,9 +1250,10 @@
                                             
                                     // }
                                 }
+        /////////////////////////////////////
         
-        
-        
+        ////////////////////////////////
+                                  
         
         
                                     $(document).on('click', '.download-icon', function () {
@@ -1485,6 +1523,24 @@
         
             });
         
+    </script>
+    <script>
+         function togglePopupMenu() {
+            var popupMenu = document.getElementById("popupMenu");
+            if (popupMenu.style.display === "block") {
+                popupMenu.style.display = "none";
+            } else {
+                popupMenu.style.display = "block";
+            }
+        }
+        
+        // Close the popup menu if the user clicks outside of it
+        window.onclick = function(event) {
+            var popupMenu = document.getElementById("popupMenu");
+            if (event.target !== popupMenu && !event.target.classList.contains("iconsss")) {
+                // popupMenu.style.display = "none";
+            }
+        }
     </script>
     </div>
 </body>
