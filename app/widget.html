@@ -6,7 +6,7 @@
     <style>
         html {
             font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
+           font-family: Arial, Helvetica, sans-serif;
         }
         
         ul#custom-navigation {
@@ -270,12 +270,12 @@
         }
     </style>
     <style>
-        /* Styles for the icon */
+        
         .iconsss {
             cursor: pointer;
         }
 
-        /* Styles for the popup menu container */
+       
         .popup-menu {
             display: none;
             position: absolute;
@@ -285,7 +285,7 @@
             z-index: 1;
         }
 
-        /* Styles for the popup menu items */
+        
         .popup-menu a {
             padding: 10px 10px;
             display: block;
@@ -294,8 +294,7 @@
             color: #333;
         }
 
-        /* Change the color of menu items when hovering */
-        .popup-menu a:hover {
+            .popup-menu a:hover {
             background-color: #ddd;
         }
     </style>
@@ -396,7 +395,7 @@
             }
             function boookkicons(bookdup) {
                 if (bookdup != null) {
-                    var bookurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Report:Book_Widgets?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
+                    var bookurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Report:Document_Management_History_Report?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
                     bookurl += "&Document_Upload1=" + encodeURIComponent(bookdup);
         
                     window.open(bookurl, "_parent");
@@ -1178,10 +1177,10 @@
     action: `
         <span class="iconsss" onclick="togglePopupMenu(this)">☰</span>
         <div id="popupMenu" class="popup-menu">
-            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;">  Download </i></a>
-            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;">  LOGS </i></a>
-            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;">  Comment Resolution Sheet </i></a>
-            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;">  Document Revision History </i></a>
+            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;"> <span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;Download</span> </i></a>
+            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;LOGS </span></i></a>
+            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;Comment Resolution Sheet </span></i></a>
+            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;Document Revision History </span></i></a>
         </div>
     `
 });
@@ -1525,17 +1524,31 @@
         
     </script>
     <script>
-         function togglePopupMenu() {
-            var popupMenu = document.getElementById("popupMenu");
-            if (popupMenu.style.display === "block") {
-                popupMenu.style.display = "none";
-            } else {
-                popupMenu.style.display = "block";
-            }
+         
+var openPopupMenu = null;
+document.addEventListener("click", function (event) {
+       if (event.target !== openPopupMenu && !event.target.classList.contains("iconsss")) {
+        if (openPopupMenu) {
+            openPopupMenu.style.display = "none"; 
         }
+    }
+});
+function togglePopupMenu(icon) {
+    var popupMenu = icon.nextElementSibling; 
+        if (popupMenu.style.display === "block") {
+        popupMenu.style.display = "none";
+        openPopupMenu = null;
+    } else {
+        if (openPopupMenu) {
+            openPopupMenu.style.display = "none"; 
+        }
+        popupMenu.style.display = "block";
+        openPopupMenu = popupMenu;
+    }
+}
+
         
-        // Close the popup menu if the user clicks outside of it
-        window.onclick = function(event) {
+              window.onclick = function(event) {
             var popupMenu = document.getElementById("popupMenu");
             if (event.target !== popupMenu && !event.target.classList.contains("iconsss")) {
                 // popupMenu.style.display = "none";
