@@ -224,7 +224,7 @@
             background-color: #fff;
             color: #868ff1;
             /* text-align: center; */
-            padding: 05px;
+            padding: 03px;
             display: flex;
             justify-content: space-between; 
         }
@@ -387,6 +387,7 @@
             let chid = null;
             let chpfi = null;
             let upprojectid = null;
+           
             const breadcrumbsContainer = document.getElementById('breadcrumbs-container');
             const separator = '<span class="breadcrumb-separator"> > </span>';
         
@@ -498,7 +499,7 @@
             ZOHO.CREATOR.init().then(function (data) {
         
                 // const breadcrumbs1 = ['<i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i> '];
-        
+               
                 var fpreport = {
                     reportName: "Folder_Permission_Sf_Report",
                     criteria: "ID!=0" || "ID==0",
@@ -518,6 +519,19 @@
                                 var folderpermission = response.data;
                                 var groupmaster = gresponse.data;
                                 var usercreation = uresponse.data;
+                                var config = {
+                                            appName: "ern-pmis",
+                                            reportName: "Folder_Creation_Mapping_Widgets",
+                                        };
+        
+                                        ZOHO.CREATOR.API.getRecordCount(config)
+                                            .then(function (response) {
+                                                var rescount = parseInt(response.result.records_count)
+                                                var pageSize = 200;
+                                                var totalPages = Math.ceil(rescount / pageSize);
+                                                var infoicon = [];
+        
+                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
                                 var datas = {
                                     reportName: "Folder_Creation_Mapping_Widgets",
                                     criteria: "ID!=0" || "ID==0",
@@ -529,13 +543,13 @@
                                     const output = {};
                                     var gridData = [];
         
-        
+                                         
                                     for (let i = 0; i < fcmd.length; i++) {
                                         const rp = fcmd[i]["Project"]["display_value"];
                                         const parentFolder = fcmd[i]["Parent_Folder"]["display_value"];
                                         const createdby = fcmd[i]["Created_By"];
                                         const createddt = fcmd[i]["Created_D_T"];
-        
+                                           
                                         const folder = fcmd[i]["Folder"];
         
                                         var initparams = ZOHO.CREATOR.UTIL.getInitParams();
@@ -569,6 +583,7 @@
                                                                     
                                                                         
                                                                     if (!output[rp]) {
+                                                                       
                                                                         output[rp] = {};
         
                                                                     }
@@ -579,7 +594,7 @@
         
                                                                     }
                                                                    
-    output[rp][folder]['id'] = idss;
+                                                                      output[rp][folder]['id'] = idss;
 
                                                                 
                                                                     
@@ -591,12 +606,12 @@
                                                                             output[rp][parentFolder] = {};
         
                                                                         }
-                                                                          
-                                                                                                                                     
-                                                                        
-        output[rp][parentFolder][folder] = output[rp][folder];
-        delete output[rp][folder];
-    
+                                                                                                                                        
+                                                                                                                                                                                                    
+                                                                                                                                        
+                                                                        output[rp][parentFolder][folder] = output[rp][folder];
+                                                                        delete output[rp][folder];
+                                                                    
                                                                                                                                     
                                                                     }
                                                               
@@ -715,27 +730,45 @@ function toggleFolder(element) {
                                                     field: "type",
                                                     title: "Type",
                                                     width: 60,
+                                                    headerAttributes: {
+                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
+                                                    },
                                                     template: function (dataItem) {
                                                         return dataItem.type;
                                                     }
                                                 }, {
                                                     field: "name",
                                                     title: "Folder/File",
+                                                    headerAttributes: {
+                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
+                                                    },
                                                     template: function (dataItem) {
                                                         return '<a href="javascript:void(0);" class="folder-link"><span class="folder-name">' + dataItem.name + '</span></a>';
                                                     }
                                                 }, {
                                                     field: "status",
-                                                    title: "Status"
+                                                    title: "Status",
+                                                    headerAttributes: {
+                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
+                                                    },
                                                 }, {
                                                     field: "createdby",
-                                                    title: "CreatedBy"
+                                                    title: "CreatedBy",
+                                                    headerAttributes: {
+                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
+                                                    },
                                                 }, {
                                                     field: "createddt",
-                                                    title: "Created D&T"
+                                                    title: "Created D&T",
+                                                    headerAttributes: {
+                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
+                                                    },
                                                 }, {
                                                     field: "action",
                                                     title: "Action",
+                                                    headerAttributes: {
+                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
+                                                    },
                                                     template: function (dataItem) {
                                                         return dataItem.action;
                                                     }
@@ -744,11 +777,10 @@ function toggleFolder(element) {
                                         },
                                         initialView: "grid",
                                         navigation: false,
-                                        uploadUrl: "www.youtube.com",
+                                        
                                         toolbar: {
-                                            items: [{
-                                                name: "sortDirection"
-                                            },  {
+                                            items: [
+                                                  {
                                                 name: "spacer"
                                             }, {
                                                 name: "search"
@@ -966,11 +998,26 @@ function toggleFolder(element) {
                                         showButton();
                                         hideupButton();
                                         var juju = vpf;
-                                       
+                                        var config = {
+                                            appName: "ern-pmis",
+                                            reportName: "Folder_Creation_Mapping_Widgets",
+                                        };
+        
+                                        ZOHO.CREATOR.API.getRecordCount(config)
+                                            .then(function (response) {
+                                                var rescount = parseInt(response.result.records_count)
+                                                var pageSize = 200;
+                                                var totalPages = Math.ceil(rescount / pageSize);
+                                                
+        
+                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+
                                         var subfolderDatas = {
                                             reportName: "Folder_Creation_Mapping_Widgets",
                                             criteria: "ID!=0" || "ID==0",
-                                            fields: "ID,Folder,Parent_Folder,Status,Created_By,Created_D_T,Project"
+                                            fields: "ID,Folder,Parent_Folder,Status,Created_By,Created_D_T,Project",
+                                            page: pageNumber,
+                                            pageSize: pageSize,
                                         };
                                         ZOHO.CREATOR.API.getAllRecords(subfolderDatas).then(function (subfolderResponse) {
                                             if (subfolderResponse.code === 3000) {
@@ -1142,18 +1189,37 @@ function toggleFolder(element) {
         
         
                                                 }
+                                            var config = {
+                                            appName: "ern-pmis",
+                                            reportName: "New_Upload_Report",
+                                        };
+        
+                                        ZOHO.CREATOR.API.getRecordCount(config)
+                                            .then(function (response) {
+                                                var rescount = parseInt(response.result.records_count)
+                                                var pageSize = 200;
+                                                var totalPages = Math.ceil(rescount / pageSize);
+                                                
+        
+                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
                                                 var widgetAdminDatas = {
                                 reportName: "New_Upload_Report",
                                 criteria: "ID!=0",
-                                fields: "ID,Document_Title,Status,Created_By,Created_D_T,Project"
+                                fields: "ID,Document_Title,Status,Created_By,Created_D_T,Project",
+                                page: pageNumber,
+                                pageSize: pageSize,
                             };
                             ZOHO.CREATOR.API.getAllRecords(widgetAdminDatas).then(function (widgetAdminResponse) {
                                                 
                                                 if (widgetAdminResponse.code === 3000 ) {
                                                     //showupButton();
                                                     var widgetAdminData = widgetAdminResponse.data;
-                                                 //  console.log(widgetAdminData)
+                                                  // console.log(widgetAdminData)
+                                                   
                                                     for (var z = 0; z < widgetAdminData.length; z++) {
+                                                       
+
+                                                    
                                                         var widgetAdminProject = widgetAdminData[z]["Project"]["display_value"];
                                                         var parentFolderValue = widgetAdminData[z]["Folder_Path.Folder"];
                                                         var parts = parentFolderValue.split(",");
@@ -1239,12 +1305,20 @@ function toggleFolder(element) {
                                                     fileManager.dataSource.data(subfolderGridData);
                                                     ssupdateBreadcrumbss(folderName)
                                         });
+
+                                                }
+                                            });
+                                    
                                             } else {
                                                 console.error("Subfolder data is not valid:", subfolderResponse);
                                             }
+                                              
                                         }).catch(function (error) {
                                             console.error("API request error (Folder_Creation_Mapping_Widgets):", error);
                                         });
+                                    }
+                                });
+                                    
                                      //}
                                     // else
                                     // {
@@ -1289,9 +1363,24 @@ function toggleFolder(element) {
                                         //console.log("dataIndex:", dataIndex);
                                         var currentindex = dataIndex;
                                         //console.log("Clicked Download for folder:", currentFolder);
+                                        var config = {
+                                            appName: "ern-pmis",
+                                            reportName: "Download_icon_widgets",
+                                        };
+        
+                                        ZOHO.CREATOR.API.getRecordCount(config)
+                                            .then(function (response) {
+                                                var rescount = parseInt(response.result.records_count)
+                                                var pageSize = 200;
+                                                var totalPages = Math.ceil(rescount / pageSize);
+                                                var infoicon = [];
+        
+                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
                                         var diw = {
                                             reportName: "Download_icon_widgets",
                                             criteria: "ID!=0" || "ID==0",
+                                            page: pageNumber,
+                                            pageSize: pageSize,
                                             //fields: "Folder,Status,Created_By,Created_D_T"
                                         };
                                         ZOHO.CREATOR.API.getAllRecords(diw).then(function (diwresponse) {
@@ -1314,6 +1403,8 @@ function toggleFolder(element) {
         
                                             }
                                         });
+                                    }
+                                    });
                                     });
         
                                     $(document).on('click', '.book-icon', function () {
@@ -1435,7 +1526,7 @@ function toggleFolder(element) {
                                         //console.log("dataIndex:", dataIndex);
                                         var infoindex = dataIndex;
                                         //console.log(bookindex);
-        
+                                        
                                         var config = {
                                             appName: "ern-pmis",
                                             reportName: "Download_icon_widgets",
@@ -1541,8 +1632,12 @@ function toggleFolder(element) {
         
                                     });
                                 });
-                            });
+                            }
                         });
+                            });
+                            
+                        });
+                        
                     });
                 });
         
