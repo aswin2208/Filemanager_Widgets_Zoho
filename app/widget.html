@@ -219,30 +219,27 @@
         }
     </style>
     <style>
-        /* CSS for styling the header */
         header {
             background-color: #fff;
             color: #868ff1;
-            /* text-align: center; */
-            padding: 03px;
+            padding: 10px;
             display: flex;
-            justify-content: space-between; 
+            justify-content: space-between;
+            align-items: center;
+            height: 30px; 
         }
-        header h1.header-name {
-    text-align: center;
-}
-
-        
+    
         .header-name {
             font-size: 18px;
+            margin: 0 auto;
         }
-
-        /* CSS for styling the icons */
+    
         .header-icons {
             display: flex;
             gap: 05px; 
+            align-items: center;
         }
-        
+    
         a.social {
             background-color: #fff;
             width: 40px;
@@ -255,7 +252,7 @@
             justify-content: center;
             align-items: center;
         }
-        
+    
         a.social::before {
             content: '';
             background-color: #3271B8;
@@ -264,24 +261,23 @@
             position: absolute;
             top: 100%;
         }
-        
+    
         a.social:hover::before {
             top: 0;
         }
-        
+    
         a.social svg {
             width: 20px;
             height: 20px;
             z-index: 1;
             transition: 0.5s all ease-in-out;
         }
-        
+    
         a.social:hover svg path {
             fill: #fff;
         }
-        
-        
     </style>
+    
     <style>
         
         .iconsss {
@@ -293,14 +289,14 @@
             display: none;
             position: absolute;
             background-color: #f1f1f1;
-            min-width: 160px;
+            min-width: 130px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
         }
 
         
         .popup-menu a {
-            padding: 10px 10px;
+            padding: 05px 05px;
             display: block;
             text-align: left;
             text-decoration: none;
@@ -311,7 +307,38 @@
             background-color: #ddd;
         }
     </style>
+    <style>
+        .page-loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+}
 
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -25px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
@@ -362,7 +389,11 @@
         <div class="bg-overlay"></div>
     </div>
     <div id="example"></div>
-    <div id="filemanager"></div>
+    <div id="filemanager"></div>   
+    <div id="page-loader" class="page-loader">
+        <div class="spinner"></div>
+    </div>
+    
     <script>
         $(document).ready(function () {
             hideButton();
@@ -484,11 +515,25 @@
                 var grpurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#report:Group_Masters_Page?zc_LoadIn=dialog&zc_MoreAction=false&zc_SecHeader=false&zc_AddRec=false";
                 window.open(grpurl, "_parent");
             });
+            
+function showLoader() {
+    document.getElementById("page-loader").style.display = "block";
+    console.log("showing")
+}
+
+
+function hideLoader() {
+    document.getElementById("page-loader").style.display = "none";
+    console.log("hiding")
+}
+
             function showButton() {
                 $(".new-button").show();
+                $(".Group-button").show()
             }
             function hideButton() {
                 $(".new-button").hide();
+                $(".Group-button").hide();
             }
             function showupButton() {
                 $(".upload-button").show();
@@ -781,7 +826,8 @@
                                                 name: "spacer"
                                             }, {
                                                 name: "search"
-                                            }]
+                                            }
+                                        ]
                                         },
                                         contextMenu: {
                                             // items: [{
@@ -877,26 +923,32 @@
                                         breadcrumbs.unshift("Home");
         
         
-                                        breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
-                                            const isActive = index === breadcrumbs.length - 1;
-                                            const activeClass = isActive ? 'active-breadcrumb' : '';
-                                            return `<span class="breadcrumb-item ${activeClass}" data-index="${index}">${crumb}</span>${separator}`;
-                                        }).join('');
+                                        // breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
+                                        //     const isActive = index === breadcrumbs.length - 1;
+                                        //     const activeClass = isActive ? 'active-breadcrumb' : '';
+                                        //     return `<span class="breadcrumb-item ${activeClass}" data-index="${index}">${crumb}</span>${separator}`;
+                                        // }).join('');
                                         // const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
                                         // breadcrumbItems.forEach(item => {
                                         //     item.addEventListener('click', handleBreadcrumbClick);
                                         // });
         
                                        // console.log("breadcrumbs", breadcrumbs)
+                                       
                                         for (let i = 0; i < breadcrumbs.length; i++) {
+                                            //showLoader();
                                             const breadcrumbValue = breadcrumbs[i];
                                             var vpf = breadcrumbs[1];
                                             navigateToSubfolder(breadcrumbValue, vpf);
+                                           
+                                            
+                                            
         
                                         }
-        
+                                       
+                                        
                                     }
-        
+                                    
                                     // console.log("breadcrumbs" ,breadcrumbs)
         
                                     function findParentFolders(node, targetId) {
@@ -992,8 +1044,10 @@
                                     // }
         
                                     function navigateToSubfolder(folderName, vpf) {
+                                        showLoader();
                                         // if(clickedFolder != 'Home')
                                         // {
+                                            
                                         showButton();
                                         hideupButton();
                                         var juju = vpf;
@@ -1271,10 +1325,10 @@
     action: `
         <span class="iconsss" onclick="togglePopupMenu(this)">☰</span>
         <div id="popupMenu" class="popup-menu">
-            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;"> <span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;Download</span> </i></a>
-            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;LOGS </span></i></a>
-            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;Comment Resolution Sheet </span></i></a>
-            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:13px;font-weight: normal;">&nbsp;&nbsp;Document Revision History </span></i></a>
+            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;"> <span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;Download</span> </i></a>
+            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;Logs </span></i></a>
+            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;CR Sheet </span></i></a>
+            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;Revision History </span></i></a>
         </div>
     `
 });
@@ -1290,6 +1344,7 @@
                                                     fileManager.refresh();
                                                     fileManager.dataSource.data(subfolderGridData);
                                                     ssupdateBreadcrumbss(folderName)
+                                                    hideLoader();
                                                     //updateBreadcrumbs("folderName");
                                                     //console.log(subfolderGridData)
         
@@ -1303,11 +1358,12 @@
                                                     fileManager.refresh();
                                                     fileManager.dataSource.data(subfolderGridData);
                                                     ssupdateBreadcrumbss(folderName)
+                                                    hideLoader();
                                         });
 
                                                 }
                                             });
-                                    
+                                                
                                             } else {
                                                 console.error("Subfolder data is not valid:", subfolderResponse);
                                             }
