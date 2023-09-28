@@ -609,8 +609,10 @@
                                                                                                                                         
                                                                                                                                                                                                     
                                                                                                                                         
-                                                                        output[rp][parentFolder][folder] = output[rp][folder];
-                                                                        delete output[rp][folder];
+                                                                        
+        output[rp][parentFolder][folder] = output[rp][folder];
+        delete output[rp][folder];
+    
                                                                     
                                                                                                                                     
                                                                     }
@@ -653,45 +655,39 @@
                                   //  console.log(JSON.stringify(output, null, 2))
                                     //console.log("griddata level1",gridData)
                                     var navigationHtml = '<ul id="custom-navigation">';
-for (var folder in output) {
-    if (output.hasOwnProperty(folder)) {
-        var isOpen = output[folder].isOpen; // Assuming you have an 'isOpen' property in your data
+                                    for (var folder in output) {
+                                        if (output.hasOwnProperty(folder)) {
+        
+                                            navigationHtml += '<li><a href="javascript:void(0);" class="project-link" ><i class="fas fa-chevron-right icon"></i>' + folder + '</a>';
+                                            generateNavigationHtml(output[folder]);
+                                            navigationHtml += '</li>';
+                                        }
+                                    }
+                                    navigationHtml += '</ul>';
+        
+                                    function generateNavigationHtml(subfolders) {
+                                        // console.log(JSON.stringify(subfolders, null, 2))
+                                        if (Object.keys(subfolders).length > 0) {
+                                            navigationHtml += '<ul class="subfolders">';
+                                            for (var subfolder in subfolders) {
+        
+                                                if (subfolders.hasOwnProperty(subfolder)) {
+                                                    var subfolderId = subfolders[subfolder].id || '';
+                                                    if (subfolder !== 'id') {
+        
+                                                        navigationHtml += '<li><a href="javascript:void(0);" class="level-link" id="' + subfolderId + '"><i class="fas fa-chevron-right icon"></i>' + subfolder + '</a>';
+                                                        generateNavigationHtml(subfolders[subfolder]);
+                                                        navigationHtml += '</li>';
+                                                    }
+                                                    //console.log(subfolders.id)
+                                                }
+                                            }
+                                            navigationHtml += '</ul>';
+                                        }
+                                    }
 
-        navigationHtml += '<li><a href="javascript:void(0);" class="project-link" onclick="toggleFolder(this)"><i class="fas ' + (isOpen ? 'fa-chevron-down' : 'fa-chevron-right') + ' icon"></i>' + folder + '</a>';
-        generateNavigationHtml(output[folder]);
-        navigationHtml += '</li>';
-    }
-}
-navigationHtml += '</ul>';
 
-function generateNavigationHtml(subfolders) {
-    if (Object.keys(subfolders).length > 0) {
-        navigationHtml += '<ul class="subfolders">';
-        for (var subfolder in subfolders) {
-            if (subfolders.hasOwnProperty(subfolder)) {
-                var subfolderId = subfolders[subfolder].id || '';
-                if (subfolder !== 'id') {
-                    var isOpen = subfolders[subfolder].isOpen; // Assuming you have an 'isOpen' property in your data
 
-                    navigationHtml += '<li><a href="javascript:void(0);" class="level-link" id="' + subfolderId + '"><i class="fas ' + (isOpen ? 'fa-chevron-down' : 'fa-chevron-right') + ' icon"></i>' + subfolder + '</a>';
-                    generateNavigationHtml(subfolders[subfolder]);
-                    navigationHtml += '</li>';
-                }
-            }
-        }
-        navigationHtml += '</ul>';
-    }
-}
-
-function toggleFolder(element) {
-    var icon = element.querySelector('i');
-    var isOpen = !icon.classList.contains('fa-chevron-down');
-    icon.classList.remove(isOpen ? 'fa-chevron-right' : 'fa-chevron-down');
-    icon.classList.add(isOpen ? 'fa-chevron-down' : 'fa-chevron-right');
-
-    // Toggle the isOpen state in your data structure
-    // Update the isOpen property of the corresponding folder or subfolder
-}
 
         
                                     $("#filemanager").kendoFileManager({
@@ -739,6 +735,7 @@ function toggleFolder(element) {
                                                 }, {
                                                     field: "name",
                                                     title: "Folder/File",
+                                                    
                                                     headerAttributes: {
                                                         style: "background-color: #868ff1; font-weight: bold;color: white;"
                                                     },
@@ -801,6 +798,8 @@ function toggleFolder(element) {
                                     //console.log("level1",fileManager.dataSource.data())
                                     $("#filemanager .k-filemanager-navigation").html(navigationHtml);
                                     $(".project-link, .level-link").click(function () {
+                                        var icon = $(this).find('i.icon');
+                                        icon.toggleClass('fa-chevron-right fa-chevron-down');
                                         $(this).next(".subfolders").toggleClass("show");
                                         if (event.target.tagName === 'A') {
                                             var folderName = $(this).text().trim();
