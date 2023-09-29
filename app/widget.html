@@ -222,11 +222,9 @@
         header {
             background-color: #fff;
             color: #868ff1;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 30px; 
+            padding: 4px;
+            text-align: center;
+            
         }
     
         .header-name {
@@ -339,6 +337,12 @@
 }
 
     </style>
+    <style>
+       
+        .k-filemanager-toolbar {
+            height: 40px; 
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
@@ -349,31 +353,8 @@
 </head>
 
 <body>
-    <header>
-        
+    <header>   
         <h1 class="header-name">Document Management System</h1>
-   
-   
-        <div class="header-icons"> 
-            <a class="social group Group-button"> 
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-people" viewBox="0 0 16 16">
-                <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-            </svg>
-            </a> 
-            <a class="social folderrr new-button"> 
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-folder" viewBox="0 0 16 16">
-                <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" />
-            </svg> 
-            </a> 
-            <a class="social uploadd upload-button"> 
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-                <rect width="256" height="256" fill="none" />
-                <polyline points="86 82 128 40 170 82" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" />
-                <line x1="128" y1="152" x2="128" y2="40" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" />
-                <path d="M216,152v56a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V152" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" />
-            </svg> 
-          </a> 
-        </div>
     </header>
             <div id="breadcrumbs-container" class="sticky">
                 <a id="breadcrumb-home-link" class="breadcrumb-home" href="#">
@@ -396,8 +377,7 @@
     
     <script>
         $(document).ready(function () {
-            hideButton();
-            hideupButton();
+            
             let currentfolderName;
             let Project = null;
             let Parent_Folder = null;
@@ -434,7 +414,7 @@
                     var groupnameString = Group_Name.join(",");
                     formURL += "&Group_Name=" + encodeURIComponent(Group_Name);
                 }
-                console.log(formURL);
+                //console.log(Group_Name);
                 //console.log(Folder_Path);
                 window.open(formURL, "_parent");
             }
@@ -487,46 +467,91 @@
                 window.open(chediturl, "_parent");
             }
         
-            $(".new-button").click(function () {
-                if (Project !== null && Parent_Folder !== null && Folder_Path !== null) {
-                    Folder_Path.reverse();
-                    openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name);
-                    //console.log(Project,Folder_Path,Parent_Folder,Group_Name)
-                } else {
-                    $(".custom-model-main").addClass('model-open');
-                }
-            });
-            $(".close-btn, .bg-overlay").click(function () {
-                $(".custom-model-main").removeClass('model-open');
-            });
-            $(".upload-button").click(function () {
-                if (parent_id !== null && Document_Upload !== null && Sub_Folder !== null && Folder1 !== null && Project_ID !== null && Folder_Path1 != null) {
+
+
+            // $(".new-button").click(function () {
+            //     if (Project !== null && Parent_Folder !== null && Folder_Path !== null) {
+            //         Folder_Path.reverse();
+            //         openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name);
+            //         //console.log(Project,Folder_Path,Parent_Folder,Group_Name)
+            //     } else {
+            //         $(".custom-model-main").addClass('model-open');
+            //     }
+            // });
+            // $(".close-btn, .bg-overlay").click(function () {
+            //     $(".custom-model-main").removeClass('model-open');
+            // });
+            // $(".upload-button").click(function () {
+            //     if (parent_id !== null && Document_Upload !== null && Sub_Folder !== null && Folder1 !== null && Project_ID !== null && Folder_Path1 != null) {
+            //         openuploadform(parent_id, Document_Upload, Folder1, Sub_Folder, Project_ID, Folder_Path1);
+            //         //console.log(Folder1)
+        
+            //     } else {
+            //         $(".custom-model-main").addClass('model-open');
+            //         //alert("Folder_Path1",Folder_Path1)
+            //         // console.log("parent_id",parent_id, "Document_Upload",Document_Upload, "Folder1",Folder1,"Sub_Folder", Sub_Folder, "Project_ID",Project_ID, "Folder_Path1",Folder_Path1)
+        
+            //     }
+            // });
+            // $(".Group-button").click(function () {
+            //     var grpurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#report:Group_Masters_Page?zc_LoadIn=dialog&zc_MoreAction=false&zc_SecHeader=false&zc_AddRec=false";
+            //     window.open(grpurl, "_parent");
+            // });
+
+
+
+
+ ////////////toolbar button//////////////////////////////           
+ $(document).on("click", ".Group-button", function() {
+    var grpurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#report:Group_Masters_Page?zc_LoadIn=dialog&zc_MoreAction=false&zc_SecHeader=false&zc_AddRec=false";
+                window.open(grpurl, "_parent");
+});
+
+$(document).on("click", ".upload-button", function() {
+    if (parent_id !== null && Document_Upload !== null && Sub_Folder !== null && Folder1 !== null && Project_ID !== null && Folder_Path1 != null) {
                     openuploadform(parent_id, Document_Upload, Folder1, Sub_Folder, Project_ID, Folder_Path1);
                     //console.log(Folder1)
         
                 } else {
                     $(".custom-model-main").addClass('model-open');
-                    //alert("Folder_Path1",Folder_Path1)
-                    // console.log("parent_id",parent_id, "Document_Upload",Document_Upload, "Folder1",Folder1,"Sub_Folder", Sub_Folder, "Project_ID",Project_ID, "Folder_Path1",Folder_Path1)
-        
+                    //alert("Folder_Path1",Folder_Path1)      
                 }
+});
+
+$(document).on("click", ".new-button", function() {
+    if (Project !== null && Parent_Folder !== null && Folder_Path !== null) {
+                    Folder_Path.reverse();
+                    openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name);
+                    //console.log(Project,Folder_Path,Parent_Folder,Group_Name)
+                } else {
+                    
+                    $(".custom-model-main").addClass('model-open');
+                }
+});
+
+$(".close-btn, .bg-overlay").click(function () {
+                $(".custom-model-main").removeClass('model-open');
             });
-            $(".Group-button").click(function () {
-                var grpurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#report:Group_Masters_Page?zc_LoadIn=dialog&zc_MoreAction=false&zc_SecHeader=false&zc_AddRec=false";
-                window.open(grpurl, "_parent");
-            });
-            
+///////////////////////////////////////////////////////////
+
+
+
+/////////////PageLoader////////////////////////////////////////////
 function showLoader() {
     document.getElementById("page-loader").style.display = "block";
-    console.log("showing")
+    // console.log("showing")
 }
 
 
 function hideLoader() {
     document.getElementById("page-loader").style.display = "none";
-    console.log("hiding")
+    // console.log("hiding")
 }
+///////////////////////////////////////////////////////////////////
 
+
+
+//////////////////////Toolbar Button Hide/Show////////////////////
             function showButton() {
                 $(".new-button").show();
                 $(".Group-button").show()
@@ -541,6 +566,9 @@ function hideLoader() {
             function hideupButton() {
                 $(".upload-button").hide();
             }
+//////////////////////////////////////////////////////////////////////            
+
+
             ZOHO.CREATOR.init().then(function (data) {
         
                 // const breadcrumbs1 = ['<i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i> '];
@@ -623,8 +651,8 @@ function hideLoader() {
                                                                 var fcmgroup = fcrtmap[o];
                                                                 if (fcmgroup == gnames) {
                                                                     const idss = fcmd[i]["ID"];
-                                                                    const lss = fcmd[i]["Level"];
-                                                                    //console.log(lss)
+                                                                    const level = fcmd[i]["Level"];
+                                                                    
                                                                     
                                                                         
                                                                     if (!output[rp]) {
@@ -655,8 +683,8 @@ function hideLoader() {
                                                                                                                                                                                                     
                                                                                                                                         
                                                                         
-        output[rp][parentFolder][folder] = output[rp][folder];
-        delete output[rp][folder];
+                                                                            output[rp][parentFolder][folder] = output[rp][folder];
+                                                                            delete output[rp][folder];
     
                                                                     
                                                                                                                                     
@@ -777,7 +805,8 @@ function hideLoader() {
                                                     template: function (dataItem) {
                                                         return dataItem.type;
                                                     }
-                                                }, {
+                                                }, 
+                                               {
                                                     field: "name",
                                                     title: "Folder/File",
                                                     
@@ -811,7 +840,7 @@ function hideLoader() {
                                                 }, {
                                                     field: "action",
                                                     title: "Action",
-                                                    width: 70,
+                                                    width: 80,
                                                     headerAttributes: {
                                                         style: "background-color: #868ff1; font-weight: bold;color: white;"
                                                     },
@@ -829,8 +858,27 @@ function hideLoader() {
                                                   {
                                                 name: "spacer"
                                             }, {
-                                                name: "search"
-                                            }
+                                                template: '<div class="header-icons"> \
+                <a class="social group Group-button"> \
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-people" viewBox="0 0 16 16"> \
+                        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" /> \
+                    </svg> \
+                </a> \
+                <a class="social folderrr new-button"> \
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-folder" viewBox="0 0 16 16"> \
+                        <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" /> \
+                    </svg> \
+                </a> \
+                <a class="social uploadd upload-button"> \
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"> \
+                        <rect width="256" height="256" fill="none" /> \
+                        <polyline points="86 82 128 40 170 82" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" /> \
+                        <line x1="128" y1="152" x2="128" y2="40" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" /> \
+                        <path d="M216,152v56a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V152" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" /> \
+                    </svg> \
+                </a> \
+            </div>'
+        }
                                         ]
                                         },
                                         contextMenu: {
@@ -859,7 +907,11 @@ function hideLoader() {
                                         }
                                     });
         
-                                  
+                                    $(document).ready(function () {
+
+             hideButton();
+            hideupButton();
+})
                                     //////////////////////////////////////////////////////////////////////////////////////////////////    
                                     var breadcrumbs = ["Home"];
                                     
@@ -1081,7 +1133,7 @@ function hideLoader() {
         
                                                 var subfolderFcmd = subfolderResponse.data;
                                                 var subfolderGridData = [];
-                                               // console.log("subfolderFcmd",subfolderFcmd)
+                                               //console.log("subfolderFcmd",subfolderFcmd)
                                                 for (var i = 0; i < subfolderFcmd.length; i++) {
                                                     var subproject = subfolderFcmd[i]["Project"]["display_value"];
                                                     var parentFolder = subfolderFcmd[i]["Parent_Folder"]["display_value"];
@@ -1175,6 +1227,8 @@ function hideLoader() {
                                                         else {
                                                             showupButton();
                                                         }
+
+                                                        
         
                                                         parent_id = subfolderFcmd[i]["ID"];
                                                         Sub_Folder = subfolderFcmd[i]["ID"];
@@ -1193,8 +1247,13 @@ function hideLoader() {
                                                                     // console.log("inside")
                                                                     for (let k = 0; k < groupmaster.length; k++) {
                                                                         var gpname = groupmaster[k]["Group_Name"];
+                                                                       // console.log(groupmaster)
                                                                         var username = [];
+                                                                        
+                                                                            
+                                                                                           
                                                                         if (groupname == gpname) {
+                                                                          
                                                                             var uname = groupmaster[k]["User_Name"];
                                                                             for (var l = 0; l < uname.length; l++) {
                                                                                 var usname = uname[l]["display_value"];
@@ -1223,8 +1282,14 @@ function hideLoader() {
                                                                                             Parent_Folder = subfolderFcmd[i]["ID"];
                                                                                             Folder_Path.push(Parent_Folder);
                                                                                             Group_Name = [];
-                                                                                            gnm = groupmaster[k]["ID"];
-                                                                                            Group_Name.push(gnm);
+                                                                                            var gnm = subfolderFcmd[i]["Group_Name"]; 
+                                                                                               for (var z = 0; z < gnm.length; z++) {
+                                                                                                    var gngn = gnm[z]["ID"];
+                                                                                                     Group_Name.push(gngn);
+                                                                                
+                                                                                                      }
+                                                                                           
+                                                                                            
                                                                                             //console.log("im final broo",Folder_Path)
                                                                                         }
                                                                                     }
@@ -1329,10 +1394,10 @@ function hideLoader() {
     action: `
         <span class="iconsss" onclick="togglePopupMenu(this)">☰</span>
         <div id="popupMenu" class="popup-menu">
-            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;"> <span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;Download</span> </i></a>
-            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;Logs </span></i></a>
-            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;CR Sheet </span></i></a>
-            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:11px;font-weight: normal;">&nbsp;&nbsp;Revision History </span></i></a>
+            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;"> <span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Download</span> </i></a>
+            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Logs </span></i></a>
+            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;CR Sheet </span></i></a>
+            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Revision History </span></i></a>
         </div>
     `
 });
@@ -1356,6 +1421,7 @@ function hideLoader() {
                                                 else {
                                                     
                                                     console.error("Widget_Admin data is not valid:", widgetAdminResponse);
+                                                    hideLoader();
                                                 }
                                             }).catch(function (error) {
                                                 var fileManager = $("#filemanager").data("kendoFileManager");
@@ -1370,10 +1436,12 @@ function hideLoader() {
                                                 
                                             } else {
                                                 console.error("Subfolder data is not valid:", subfolderResponse);
+                                                hideLoader();
                                             }
                                               
                                         }).catch(function (error) {
                                             console.error("API request error (Folder_Creation_Mapping_Widgets):", error);
+                                            hideLoader();
                                         });
                                     }
                                 });
