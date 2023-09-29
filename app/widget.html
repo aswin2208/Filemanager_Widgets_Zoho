@@ -571,13 +571,8 @@ function hideLoader() {
 
             ZOHO.CREATOR.init().then(function (data) {
         
-                // const breadcrumbs1 = ['<i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i> '];
-               
-                var fpreport = {
-                    reportName: "Folder_Permission_Sf_Report",
-                    criteria: "ID!=0" || "ID==0",
-                };
-                ZOHO.CREATOR.API.getAllRecords(fpreport).then(function (response) {
+                            
+
                     var greport = {
                         reportName: "Group_Masters_widgets",
                         criteria: "ID!=0" || "ID==0",
@@ -589,7 +584,7 @@ function hideLoader() {
                         };
                         ZOHO.CREATOR.API.getAllRecords(ureport).then(function (uresponse) {
                            
-                                var folderpermission = response.data;
+                               
                                 var groupmaster = gresponse.data;
                                 var usercreation = uresponse.data;
                                 var config = {
@@ -602,13 +597,15 @@ function hideLoader() {
                                                 var rescount = parseInt(response.result.records_count)
                                                 var pageSize = 200;
                                                 var totalPages = Math.ceil(rescount / pageSize);
-                                                var infoicon = [];
+                                                
         
                                                 for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
                                 var datas = {
                                     reportName: "Folder_Creation_Mapping_Widgets",
                                     criteria: "ID!=0" || "ID==0",
-                                    fields: "Folder,Status,Created_By,Created_D_T"
+                                    fields: "Folder,Status,Created_By,Created_D_T",
+                                    page: pageNumber,
+                                    pageSize: pageSize,
                                 };
                                 ZOHO.CREATOR.API.getAllRecords(datas).then(function (response) {
                                     var fcmd = response.data;
@@ -1182,6 +1179,7 @@ function hideLoader() {
                                                                         if (ginx == usrname) {
                                                                             var gnames = groupmaster[k]["Group_Name"];
                                                                             var fcmgn = fcmd[i]["Group_Name"];
+                                                                            console.log(fcmgn);
                                                                             let fcrtmap = [];
                                                                             for (var n = 0; n < fcmgn.length; n++) {
                                                                                 var ffccmm = fcmgn[n]["display_value"];
@@ -1233,6 +1231,28 @@ function hideLoader() {
                                                         parent_id = subfolderFcmd[i]["ID"];
                                                         Sub_Folder = subfolderFcmd[i]["ID"];
                                                         Document_Upload = subfolderFcmd[i]["ID"];
+                                                        
+                                                        var config = {
+                                            appName: "ern-pmis",
+                                            reportName: "Folder_Permission_Sf_Report",
+                                        };
+        
+                                        ZOHO.CREATOR.API.getRecordCount(config)
+                                            .then(function (response) {
+                                                var rescount1 = parseInt(response.result.records_count)
+                                                var pageSizee = 200;
+                                                var totalPagess = Math.ceil(rescount1 / pageSizee);
+                                                
+        
+                                                for (var pageNumbers = 1; pageNumbers <= totalPagess; pageNumbers++) {   
+												                var fpreport = {
+                    reportName: "Folder_Permission_Sf_Report",
+                    criteria: "ID!=0" || "ID==0",
+                    page: pageNumbers,
+                    pageSize: pageSizee,
+                };
+                ZOHO.CREATOR.API.getAllRecords(fpreport).then(function (response) {
+                    var folderpermission = response.data;
         
                                                         for (let j = 0; j < folderpermission.length; j++) {
                                                             var folderperm = folderpermission[j]["Folder_permission"];
@@ -1281,7 +1301,7 @@ function hideLoader() {
                                                                                             Project = subfolderFcmd[i]["Project"]["ID"];
                                                                                             Parent_Folder = subfolderFcmd[i]["ID"];
                                                                                             Folder_Path.push(Parent_Folder);
-                                                                                            Group_Name = [];
+                                                                                           // Group_Name = [];
                                                                                             var gnm = subfolderFcmd[i]["Group_Name"]; 
                                                                                                for (var z = 0; z < gnm.length; z++) {
                                                                                                     var gngn = gnm[z]["ID"];
@@ -1305,7 +1325,14 @@ function hideLoader() {
                                                                     //console.log("im at else")
                                                                 }
                                                             }
+                                                       
                                                         }
+                                                    });
+                                                    }
+                                                
+                                            });
+
+
                                                     }
         
         
@@ -1766,12 +1793,13 @@ function hideLoader() {
                         });
                         
                     });
+               
                 });
         
         
         
         
-            });
+            
         
     </script>
     <script>
