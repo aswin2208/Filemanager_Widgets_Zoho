@@ -398,7 +398,8 @@
             let chid = null;
             let chpfi = null;
             let upprojectid = null;
-           
+            var countings = 0;
+            var vallevel = null;
             const breadcrumbsContainer = document.getElementById('breadcrumbs-container');
             const separator = '<span class="breadcrumb-separator"> > </span>';
         
@@ -619,7 +620,7 @@ function hideLoader() {
                                         const parentFolder = fcmd[i]["Parent_Folder"]["display_value"];
                                         const createdby = fcmd[i]["Created_By"];
                                         const createddt = fcmd[i]["Created_D_T"];
-                                           
+
                                         const folder = fcmd[i]["Folder"];
         
                                         var initparams = ZOHO.CREATOR.UTIL.getInitParams();
@@ -924,6 +925,7 @@ function hideLoader() {
                                             const isActive = index === breadcrumbs.length - 1;
                                             const activeClass = isActive ? 'active-breadcrumb' : '';
                                             return `<span class="breadcrumb-item ${activeClass}" data-index="${index}">${crumb}</span>${separator}`;
+                                            
                                         }).join('');
                                         const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
                                         breadcrumbItems.forEach(item => {
@@ -934,7 +936,7 @@ function hideLoader() {
                                     function sshandleBreadcrumbClickss(event) {
                                        const clickedIndex = event.target.getAttribute('data-index');
                                          clickedFolder = breadcrumbs[clickedIndex];
-                                       
+                                         
                                          if(clickedFolder == 'Home')
                                         {
                                             
@@ -944,7 +946,15 @@ function hideLoader() {
                                         }
                                         else
                                         {
-                                        navigateToSubfolder(clickedFolder);
+                                        
+                                        
+                                            var indexOfFolder = vallevel.indexOf(clickedFolder);
+
+                                            if (indexOfFolder !== -1) {
+                                                vallevel = vallevel.substring(0, indexOfFolder + clickedFolder.length);
+                                            }
+                                            
+                                        navigateToSubfolder(clickedFolder,null);
                                         //uploadlogic(clickedFolder)
                                     }
                                     }
@@ -953,6 +963,7 @@ function hideLoader() {
                                     {
                                         //clickedFolder = null;
                                         breadcrumbs.length = 0;
+                                        vallevel = null;
                                         breadcrumbsContainer.innerHTML = `<span class="breadcrumb-item active-breadcrumb" data-index="0"><i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i></span>`;
                                         var fileManager = $("#filemanager").data("kendoFileManager");
                                         fileManager.refresh();
@@ -987,11 +998,12 @@ function hideLoader() {
                                         // });
         
                                        // console.log("breadcrumbs", breadcrumbs)
-                                       
+                                        
                                         for (let i = 0; i < breadcrumbs.length; i++) {
                                             //showLoader();
                                             const breadcrumbValue = breadcrumbs[i];
                                             var vpf = breadcrumbs[1];
+                                            
                                             navigateToSubfolder(breadcrumbValue, vpf);
                                            
                                             
@@ -1028,13 +1040,19 @@ function hideLoader() {
                                     //     navigateToSubfolder(clickedFolder);
                                     //     uploadlogic(clickedFolder)
                                     // }
+                                    
                                     $("#filemanager").on("click", ".folder-link", function () {
                                         var folderName = $(this).find(".folder-name").text();
                                        /// uploadlogic(folderName);
+                                         
+                                         vallevel = vallevel+","+folderName;
+                                         vallevel =vallevel.split(',').filter(item => item !== 'null').join(',');
+
                                         navigateToSubfolder(folderName);
                                         if(clickedFolder == "Home")
                                         {
                                             clickedFolder = null;
+                                           
                                            breadcrumbs = ["Home"];
                                             navigateToSubfolder(folderName,folderName);
                                         }
@@ -1095,8 +1113,15 @@ function hideLoader() {
                                     //         }
                                     //     }
                                     // }
-        
+                                    
                                     function navigateToSubfolder(folderName, vpf) {
+                                        
+                                        //countings = countings+1;
+                                        
+                                        console.log(vallevel)
+                                        
+
+                                        
                                         showLoader();
                                         // if(clickedFolder != 'Home')
                                         // {
@@ -1104,38 +1129,70 @@ function hideLoader() {
                                         showButton();
                                         hideupButton();
                                         var juju = vpf;
-                                        var config = {
+
+                                        // var config = {
+                                        //     appName: "ern-pmis",
+                                        //     reportName: "Folder_Creation_Mapping_Widgets",
+                                        // };
+        
+                                        // ZOHO.CREATOR.API.getRecordCount(config)
+                                        //     .then(function (response) {
+                                        //         var rescount = parseInt(response.result.records_count)
+                                        //         var pageSize = 200;
+                                        //         var totalPages = Math.ceil(rescount / pageSize);
+                                                
+        
+                                        //         for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+
+                                        // var subfolderDatas = {
+                                        //     reportName: "Folder_Creation_Mapping_Widgets",
+                                        //     criteria: "ID!=0" || "ID==0",
+                                        //     fields: "ID,Folder,Parent_Folder,Status,Created_By,Created_D_T,Project",
+                                        //     page: pageNumber,
+                                        //     pageSize: pageSize,
+                                        // };
+
+                                        // ZOHO.CREATOR.API.getAllRecords(subfolderDatas).then(function (subfolderResponse) {
+                                        
+                                            var config = {
                                             appName: "ern-pmis",
-                                            reportName: "Folder_Creation_Mapping_Widgets",
+                                            reportName: "Folder_Permission_Sf_Report",
                                         };
         
                                         ZOHO.CREATOR.API.getRecordCount(config)
                                             .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
+                                                var rescount1 = parseInt(response.result.records_count)
+                                                var pageSizee = 200;
+                                                var totalPagess = Math.ceil(rescount1 / pageSizee);
                                                 
         
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-
-                                        var subfolderDatas = {
-                                            reportName: "Folder_Creation_Mapping_Widgets",
-                                            criteria: "ID!=0" || "ID==0",
-                                            fields: "ID,Folder,Parent_Folder,Status,Created_By,Created_D_T,Project",
-                                            page: pageNumber,
-                                            pageSize: pageSize,
-                                        };
-                                        ZOHO.CREATOR.API.getAllRecords(subfolderDatas).then(function (subfolderResponse) {
-                                            if (subfolderResponse.code === 3000) {
+                                                for (var pageNumbers = 1; pageNumbers <= totalPagess; pageNumbers++) {   
+												                var fpreport = {
+                    reportName: "Folder_Permission_Sf_Report",
+                    criteria: "ID!=0" || "ID==0",
+                    page: pageNumbers,
+                    pageSize: pageSizee,
+                };
+                ZOHO.CREATOR.API.getAllRecords(fpreport).then(function (response) {
+                    var folderpermission = response.data;
         
-                                                var subfolderFcmd = subfolderResponse.data;
+                                                  var subfolderResponse = fcmd
+                                                  
+                                            if (subfolderResponse != null) {
+        
+                                                var subfolderFcmd = subfolderResponse;
                                                 var subfolderGridData = [];
-                                               //console.log("subfolderFcmd",subfolderFcmd)
+                                              // console.log("subfolderFcmd",subfolderFcmd)
+                                              
                                                 for (var i = 0; i < subfolderFcmd.length; i++) {
+                                                    
                                                     var subproject = subfolderFcmd[i]["Project"]["display_value"];
                                                     var parentFolder = subfolderFcmd[i]["Parent_Folder"]["display_value"];
                                                     var cfolder = subfolderFcmd[i]["Folder"];
-                                                    var level = subfolderFcmd[i]["Folder"];
+                                                    var level = subfolderFcmd[i]["Level"];
+                                                    var folo = subfolderFcmd[i]["Folder_Path.Folder"];
+                                                    //console.log(folo)
+                                                    level = parseInt(level, 10);
                                                     // console.log("Parentfolder",parentFolder)
                                                     //var prjj;
                                                     // var tt;
@@ -1151,17 +1208,18 @@ function hideLoader() {
                                                         }
                                                         //console.log("on else")
                                                     }
-        
-        
-        
-                                                    //console.log("outside prj", prjj)
+                                                      
+                                                   
                                                     // if ((parentFolder == folderName && prjj == subproject) || (parentFolder == folderName && juju == subproject)) {
-                                                    if (parentFolder == folderName && prjj == subproject) {
-                                                        var udbreadcrumb = subfolderFcmd[i]["ID"];
-        
+                                                        
+                                                        if (parentFolder == folderName && prjj == subproject && folo == vallevel ) {
+                                                            //console.log("countings",countings , " ","level",level)
+                                                            
                                                         // console.log(folderName)  
-                                                        // console.log("Project is",prjj)
-        
+                                                        
+                                                        //console.log(countings,level)
+
+                                                        
                                                         var initparams = ZOHO.CREATOR.UTIL.getInitParams();
                                                         for (let j = 0; j < usercreation.length; j++) {
                                                             var uemail = usercreation[j]["E_Mail"];
@@ -1179,7 +1237,7 @@ function hideLoader() {
                                                                         if (ginx == usrname) {
                                                                             var gnames = groupmaster[k]["Group_Name"];
                                                                             var fcmgn = fcmd[i]["Group_Name"];
-                                                                            console.log(fcmgn);
+                                                                            //console.log(fcmgn);
                                                                             let fcrtmap = [];
                                                                             for (var n = 0; n < fcmgn.length; n++) {
                                                                                 var ffccmm = fcmgn[n]["display_value"];
@@ -1203,7 +1261,8 @@ function hideLoader() {
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    
+                                                }
         
                                                     Folder_Path1 = subfolderFcmd[i]["Folder_Path.Parent_Folder"];
                                                 if (Folder_Path1.startsWith(",")) {
@@ -1232,28 +1291,7 @@ function hideLoader() {
                                                         Sub_Folder = subfolderFcmd[i]["ID"];
                                                         Document_Upload = subfolderFcmd[i]["ID"];
                                                         
-                                                        var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Folder_Permission_Sf_Report",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount1 = parseInt(response.result.records_count)
-                                                var pageSizee = 200;
-                                                var totalPagess = Math.ceil(rescount1 / pageSizee);
-                                                
-        
-                                                for (var pageNumbers = 1; pageNumbers <= totalPagess; pageNumbers++) {   
-												                var fpreport = {
-                    reportName: "Folder_Permission_Sf_Report",
-                    criteria: "ID!=0" || "ID==0",
-                    page: pageNumbers,
-                    pageSize: pageSizee,
-                };
-                ZOHO.CREATOR.API.getAllRecords(fpreport).then(function (response) {
-                    var folderpermission = response.data;
-        
+                                     
                                                         for (let j = 0; j < folderpermission.length; j++) {
                                                             var folderperm = folderpermission[j]["Folder_permission"];
                                                             var foledermapping = folderpermission[j]["Folder_Creation_Mapping"]["ID"];
@@ -1298,17 +1336,19 @@ function hideLoader() {
                                                                                                 var folderPathId = folderPathArray[o]["ID"];
                                                                                                 Folder_Path.push(folderPathId);
                                                                                             }
+                                                                                            
                                                                                             Project = subfolderFcmd[i]["Project"]["ID"];
                                                                                             Parent_Folder = subfolderFcmd[i]["ID"];
                                                                                             Folder_Path.push(Parent_Folder);
                                                                                            // Group_Name = [];
+                                                                                           if(prjj == subproject){
                                                                                             var gnm = subfolderFcmd[i]["Group_Name"]; 
                                                                                                for (var z = 0; z < gnm.length; z++) {
                                                                                                     var gngn = gnm[z]["ID"];
                                                                                                      Group_Name.push(gngn);
                                                                                 
                                                                                                       }
-                                                                                           
+                                                                                                    }
                                                                                             
                                                                                             //console.log("im final broo",Folder_Path)
                                                                                         }
@@ -1327,10 +1367,10 @@ function hideLoader() {
                                                             }
                                                        
                                                         }
-                                                    });
-                                                    }
+                                            //         });
+                                            //         }
                                                 
-                                            });
+                                            // });
 
 
                                                     }
@@ -1363,14 +1403,18 @@ function hideLoader() {
                                                 if (widgetAdminResponse.code === 3000 ) {
                                                     //showupButton();
                                                     var widgetAdminData = widgetAdminResponse.data;
-                                                  // console.log(widgetAdminData)
+                                                  //console.log(widgetAdminData)
                                                    
                                                     for (var z = 0; z < widgetAdminData.length; z++) {
                                                        
 
-                                                    
+                                                        var vallevelArray = vallevel.split(','); 
+                                                        var vallevelcount = vallevelArray.length;
                                                         var widgetAdminProject = widgetAdminData[z]["Project"]["display_value"];
                                                         var parentFolderValue = widgetAdminData[z]["Folder_Path.Folder"];
+                                                        var currentlevel = widgetAdminData[z]["Folder.Level"]
+                                                        currentlevel = parseInt(currentlevel, 10);
+                                                        
                                                         var parts = parentFolderValue.split(",");
                                                         var lastPartAfterLastComma = parts[parts.length - 1].trim();
                                                         //        if(widgetAdminProject == folderName){
@@ -1382,8 +1426,9 @@ function hideLoader() {
                                                         if (widgetAdminProject === prjj) {
                                                            // console.log("parentFolderValue",parentFolderValue)
                                                             //console.log("comapring:",lastPartAfterLastComma, "",folderName)
-                                                            if (lastPartAfterLastComma == folderName) {
+                                                            if (lastPartAfterLastComma == folderName && vallevelcount == currentlevel) {
                                                                // console.log("im inside Mamee" )
+                                                               //console.log(currentlevel , countings)
                                                                 var ft = widgetAdminData[z]["Document_Upload"];
                                                                 let filetype = [];
                                                                 for (var n = 0; n < ft.length; n++) {
@@ -1465,13 +1510,15 @@ function hideLoader() {
                                                 console.error("Subfolder data is not valid:", subfolderResponse);
                                                 hideLoader();
                                             }
-                                              
-                                        }).catch(function (error) {
-                                            console.error("API request error (Folder_Creation_Mapping_Widgets):", error);
-                                            hideLoader();
                                         });
-                                    }
-                                });
+                                        }   
+                                        });
+                                //         }).catch(function (error) {
+                                //             console.error("API request error (Folder_Creation_Mapping_Widgets):", error);
+                                //             hideLoader();
+                                //         });
+                                //     }
+                                // });
                                     
                                      //}
                                     // else
@@ -1736,30 +1783,29 @@ function hideLoader() {
                                         var dataIndex = $(this).data('index');
                                         var cediticon = dataIndex;
                                         //console.log(cfolder);
-                                        var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Folder_Creation_Mapping_Widgets",
-                                        };
+                                        // var config = {
+                                        //     appName: "ern-pmis",
+                                        //     reportName: "Folder_Creation_Mapping_Widgets",
+                                        // };
         
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
-                                                var chiediicon = [];
+                                        // ZOHO.CREATOR.API.getRecordCount(config)
+                                        //     .then(function (response) {
+                                        //         var rescount = parseInt(response.result.records_count)
+                                        //         var pageSize = 200;
+                                        //         var totalPages = Math.ceil(rescount / pageSize);
+                                        //         var chiediicon = [];
         
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                                    var chi = {
-                                                        reportName: "Folder_Creation_Mapping_Widgets",
-                                                        criteria: "ID!=0" || "ID==0",
-                                                        page: pageNumber,
-                                                        pageSize: pageSize,
-                                                    };
+                                        //         for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                                        //             var chi = {
+                                        //                 reportName: "Folder_Creation_Mapping_Widgets",
+                                        //                 criteria: "ID!=0" || "ID==0",
+                                        //                 page: pageNumber,
+                                        //                 pageSize: pageSize,
+                                        //             };
         
-                                                    ZOHO.CREATOR.API.getAllRecords(chi)
-                                                        .then(function (chiresponse) {
-                                                            var records = chiresponse.data;
-                                                            chiediicon = chiediicon.concat(records);
+                                        //             ZOHO.CREATOR.API.getAllRecords(chi)
+                                        //                 .then(function (chiresponse) {
+                                                            var chiediicon = fcmd;
                                                             //console.log(chiediicon);
         
                                                             for (let i = 0; i < chiediicon.length; i++) {
@@ -1779,9 +1825,9 @@ function hideLoader() {
                                                                 }
                                                             }
         
-                                                        });
-                                                }
-                                            });
+                                            //             });
+                                            //     }
+                                            // });
         
         
                                     });
