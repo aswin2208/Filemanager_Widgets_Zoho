@@ -398,7 +398,7 @@
             let chid = null;
             let chpfi = null;
             let upprojectid = null;
-            var countings = 0;
+            
             var vallevel = null;
             const breadcrumbsContainer = document.getElementById('breadcrumbs-container');
             const separator = '<span class="breadcrumb-separator"> > </span>';
@@ -998,13 +998,17 @@ function hideLoader() {
                                         // });
         
                                        // console.log("breadcrumbs", breadcrumbs)
-                                        
+                                        vallevel = null;
                                         for (let i = 0; i < breadcrumbs.length; i++) {
                                             //showLoader();
                                             const breadcrumbValue = breadcrumbs[i];
                                             var vpf = breadcrumbs[1];
+                                            if (i > 1) {
+                                                vallevel = vallevel + "," + breadcrumbValue;
+                                                vallevel= vallevel.split(',').filter(item => item !== 'null').join(',');
+                                                navigateToSubfolder(breadcrumbValue, vpf);
+                                            }
                                             
-                                            navigateToSubfolder(breadcrumbValue, vpf);
                                            
                                             
                                             
@@ -1118,7 +1122,7 @@ function hideLoader() {
                                         
                                         //countings = countings+1;
                                         
-                                        console.log(vallevel)
+                                      
                                         
 
                                         
