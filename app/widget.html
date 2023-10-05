@@ -911,30 +911,31 @@ function hideLoader() {
             hideupButton();
 })
                                     //////////////////////////////////////////////////////////////////////////////////////////////////    
-                                    var breadcrumbs = ["Home"];
+                                    var breadcrumbs = [];
                                     
-                                    function ssupdateBreadcrumbss(folderName) {
-                                        const folderIndex = breadcrumbs.indexOf(folderName);
-        
-                                        if (folderIndex !== -1) {
-                                            breadcrumbs.splice(folderIndex + 1);
-                                        } else {
-                                            breadcrumbs.push(folderName);
-                                        }
-                                        breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
-                                            const isActive = index === breadcrumbs.length - 1;
-                                            const activeClass = isActive ? 'active-breadcrumb' : '';
-                                            return `<span class="breadcrumb-item ${activeClass}" data-index="${index}">${crumb}</span>${separator}`;
-                                            
-                                        }).join('');
-                                        const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
-                                        breadcrumbItems.forEach(item => {
-                                            item.addEventListener('click', sshandleBreadcrumbClickss);
-                                        });
-                                    }
+                                    function ssupdateBreadcrumbss(folderData) {
+    const folders = folderData.split(','); 
+    breadcrumbs = folders; 
+
+    breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
+        const isActive = index === breadcrumbs.length - 1;
+        const activeClass = isActive ? 'active-breadcrumb' : '';
+        return `<span class="breadcrumb-item ${activeClass}" data-index="${index}" data-id="${index + 1}">${crumb}</span>${separator}`;
+    }).join('');
+
+    const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
+    breadcrumbItems.forEach(item => {
+        item.addEventListener('click', sshandleBreadcrumbClickss);
+    });
+}
+
+
+
                                      var clickedFolder;
                                     function sshandleBreadcrumbClickss(event) {
                                        const clickedIndex = event.target.getAttribute('data-index');
+                                       const clickedId = event.target.getAttribute('data-id'); 
+                                       console.log('Clicked ID:', clickedId);
                                          clickedFolder = breadcrumbs[clickedIndex];
                                          
                                          if(clickedFolder == 'Home')
@@ -948,15 +949,21 @@ function hideLoader() {
                                         {
                                         
                                         
-                                            var indexOfFolder = vallevel.indexOf(clickedFolder);
+                                            const vallevelArray = vallevel.split(',');
+        
+        
+        if (clickedId >= 1 && clickedId <= vallevelArray.length) {
+            
+            vallevelArray.splice(clickedId);
+            
+          
+            vallevel = vallevelArray.join(',');
+        }
 
-                                            if (indexOfFolder !== -1) {
-                                                vallevel = vallevel.substring(0, indexOfFolder + clickedFolder.length);
-                                            }
                                             
-                                        navigateToSubfolder(clickedFolder,null);
+                                           navigateToSubfolder(clickedFolder,null);
                                         //uploadlogic(clickedFolder)
-                                    }
+                                        }
                                     }
         
                                     function Homes()
@@ -984,7 +991,7 @@ function hideLoader() {
                                         
                                         
                                         findParentFolders(output, folderName);
-                                        breadcrumbs.unshift("Home");
+                                        //breadcrumbs.unshift("Home");
         
         
                                         // breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
@@ -1003,7 +1010,7 @@ function hideLoader() {
                                             //showLoader();
                                             const breadcrumbValue = breadcrumbs[i];
                                             var vpf = breadcrumbs[1];
-                                            if (i > 1) {
+                                            if (i > 0) {
                                                 vallevel = vallevel + "," + breadcrumbValue;
                                                 vallevel= vallevel.split(',').filter(item => item !== 'null').join(',');
                                                 navigateToSubfolder(breadcrumbValue, vpf);
@@ -1121,7 +1128,7 @@ function hideLoader() {
                                     function navigateToSubfolder(folderName, vpf) {
                                         
                                         //countings = countings+1;
-                                        
+                                        //console.log(vallevel)
                                       
                                         
 
@@ -1407,16 +1414,17 @@ function hideLoader() {
                                                 if (widgetAdminResponse.code === 3000 ) {
                                                     //showupButton();
                                                     var widgetAdminData = widgetAdminResponse.data;
-                                                  //console.log(widgetAdminData)
+                                                 // console.log(widgetAdminData)
                                                    
                                                     for (var z = 0; z < widgetAdminData.length; z++) {
                                                        
 
-                                                        var vallevelArray = vallevel.split(','); 
-                                                        var vallevelcount = vallevelArray.length;
+                                                        // var vallevelArray = vallevel.split(','); 
+                                                        // var vallevelcount = vallevelArray.length;
                                                         var widgetAdminProject = widgetAdminData[z]["Project"]["display_value"];
                                                         var parentFolderValue = widgetAdminData[z]["Folder_Path.Folder"];
-                                                        var currentlevel = widgetAdminData[z]["Folder.Level"]
+                                                        var currentlevel = widgetAdminData[z]["Folder.Level"];
+                                                        var filo = widgetAdminData[z]["Folder_Path.Folder"];
                                                         currentlevel = parseInt(currentlevel, 10);
                                                         
                                                         var parts = parentFolderValue.split(",");
@@ -1430,7 +1438,7 @@ function hideLoader() {
                                                         if (widgetAdminProject === prjj) {
                                                            // console.log("parentFolderValue",parentFolderValue)
                                                             //console.log("comapring:",lastPartAfterLastComma, "",folderName)
-                                                            if (lastPartAfterLastComma == folderName && vallevelcount == currentlevel) {
+                                                            if (lastPartAfterLastComma == folderName && vallevel == filo) {
                                                                // console.log("im inside Mamee" )
                                                                //console.log(currentlevel , countings)
                                                                 var ft = widgetAdminData[z]["Document_Upload"];
@@ -1488,7 +1496,7 @@ function hideLoader() {
                                                     var fileManager = $("#filemanager").data("kendoFileManager");
                                                     fileManager.refresh();
                                                     fileManager.dataSource.data(subfolderGridData);
-                                                    ssupdateBreadcrumbss(folderName)
+                                                    ssupdateBreadcrumbss(vallevel)
                                                     hideLoader();
                                                     //updateBreadcrumbs("folderName");
                                                     //console.log(subfolderGridData)
@@ -1503,7 +1511,7 @@ function hideLoader() {
                                                 var fileManager = $("#filemanager").data("kendoFileManager");
                                                     fileManager.refresh();
                                                     fileManager.dataSource.data(subfolderGridData);
-                                                    ssupdateBreadcrumbss(folderName)
+                                                    ssupdateBreadcrumbss(v)
                                                     hideLoader();
                                         });
 
