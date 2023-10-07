@@ -611,18 +611,23 @@ function hideLoader() {
                                 ZOHO.CREATOR.API.getAllRecords(datas).then(function (response) {
                                     var fcmd = response.data;
                                     //console.log(fcmd)
-                                    const output = {};
+                                    const outputwithid ={};
+                                    var output = {};
                                     var gridData = [];
         
                                          
                                     for (let i = 0; i < fcmd.length; i++) {
-                                        const rp = fcmd[i]["Project"]["display_value"];
-                                        const parentFolder = fcmd[i]["Parent_Folder"]["display_value"];
+                                        
                                         const createdby = fcmd[i]["Created_By"];
                                         const createddt = fcmd[i]["Created_D_T"];
 
-                                        const folder = fcmd[i]["Folder"];
-        
+                                        const rp = fcmd[i]["Project"]["display_value"];
+    const parentFolderid = fcmd[i]["Parent_Folder"]["ID"];
+    const folderid = fcmd[i]["ID"];
+    const foldernames = fcmd[i]["Folder"];
+    const parentFoldernames = fcmd[i]["Parent_Folder"]["display_value"];
+
+                                        
                                         var initparams = ZOHO.CREATOR.UTIL.getInitParams();
                                         for (let j = 0; j < usercreation.length; j++) {
                                             var uemail = usercreation[j]["E_Mail"];
@@ -653,48 +658,34 @@ function hideLoader() {
                                                                     
                                                                     
                                                                         
-                                                                    if (!output[rp]) {
-                                                                       
-                                                                        output[rp] = {};
-        
-                                                                    }
-                                                                    
-                                                                    if (!output[rp][folder]) {
-                                                                        output[rp][folder] = {};
-        
-        
-                                                                    }
-                                                                   
-                                                                      output[rp][folder]['id'] = idss;
+                                                                    const folderKey = `${foldernames}_${folderid}`;
+    const parentFolderKey = `${parentFoldernames}_${parentFolderid}`;
 
-                                                                
-                                                                    
-                                                                
-                                                                    if (parentFolder) {
-                                                                        
-                                                                       
-                                                                        if (!output[rp][parentFolder]) {
-                                                                            output[rp][parentFolder] = {};
-        
-                                                                        }
-                                                                                                                                        
-                                                                                                                                                                                                    
-                                                                                                                                        
-                                                                        
-                                                                            output[rp][parentFolder][folder] = output[rp][folder];
-                                                                            delete output[rp][folder];
-    
-                                                                    
-                                                                                                                                    
-                                                                    }
+
+    if (!outputwithid[rp]) {
+        outputwithid[rp] = {};
+    }
+
+    if (!outputwithid[rp][folderKey]) {
+        outputwithid[rp][folderKey] = {};
+    }
+    outputwithid[rp][folderKey]['id'] = idss;
+    if (parentFolderid) {
+        if (!outputwithid[rp][parentFolderKey]) {
+            outputwithid[rp][parentFolderKey] = {};
+        }
+
+        outputwithid[rp][parentFolderKey][folderKey] = outputwithid[rp][folderKey];
+        delete outputwithid[rp][folderKey];
+    }
                                                               
 
         
-                                                                    if (!parentFolder) {
+                                                                    if (!parentFolderid) {
         
                                                                         gridData.push({
                                                                             type: '<i class="fa fa-folder" style="font-size:16px;color:#F3D434"></i>',
-                                                                            name: folder,
+                                                                            name: foldernames,
                                                                             status: "",
                                                                             createdby: createdby,
                                                                             createddt: createddt,
@@ -702,6 +693,8 @@ function hideLoader() {
                                                                         });
         
                                                                     }
+
+                                                                     
         
                                                                 }
         
@@ -722,14 +715,35 @@ function hideLoader() {
                                             }
                                         });
                                     }
+
+                                    function modifyKeys(obj) {
+  if (typeof obj === 'object') {
+    if (Array.isArray(obj)) {
+      return obj.map(item => modifyKeys(item));
+    } else {
+      const modifiedObj = {};
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const newKey = key.split('_')[0];
+          modifiedObj[newKey] = modifyKeys(obj[key]);
+        }
+      }
+      return modifiedObj;
+    }
+  } else {
+    return obj;
+  }
+}
+
+ output = modifyKeys(outputwithid);
                                    
-                                  //  console.log(JSON.stringify(output, null, 2))
+                                   //console.log(JSON.stringify(output, null, 2))
                                     //console.log("griddata level1",gridData)
                                     var navigationHtml = '<ul id="custom-navigation">';
                                     for (var folder in output) {
                                         if (output.hasOwnProperty(folder)) {
         
-                                            navigationHtml += '<li><a href="javascript:void(0);" class="project-link" ><i class="fas fa-chevron-right icon"></i>' + folder + '</a>';
+                                            navigationHtml += '<li><a href="javascript:void(0);" class="project-link" ><i class="fas fa-chevron-right icon"></i>' + '&nbsp;' +folder + '</a>';
                                             generateNavigationHtml(output[folder]);
                                             navigationHtml += '</li>';
                                         }
@@ -746,7 +760,7 @@ function hideLoader() {
                                                     var subfolderId = subfolders[subfolder].id || '';
                                                     if (subfolder !== 'id') {
         
-                                                        navigationHtml += '<li><a href="javascript:void(0);" class="level-link" id="' + subfolderId + '"><i class="fas fa-chevron-right icon"></i>' + subfolder + '</a>';
+                                                        navigationHtml += '<li><a href="javascript:void(0);" class="level-link" id="' + subfolderId + '"><i class="fas fa-chevron-right icon"></i>' + '&nbsp;' + subfolder + '</a>';
                                                         generateNavigationHtml(subfolders[subfolder]);
                                                         navigationHtml += '</li>';
                                                     }
