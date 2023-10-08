@@ -404,6 +404,7 @@
             const separator = '<span class="breadcrumb-separator"> > </span>';
         
             function openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name) {
+                
                 var formURL = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#form:Folder_Creation_Mapping?FolderFrorm=DocumentPage&zc_Header=false&zc_LoadIn=dialog";
                 formURL += "&Project=" + encodeURIComponent(Project);
                 if (Folder_Path.length > 0) {
@@ -428,7 +429,7 @@
                 upurl += "&Sub_Folder=" + encodeURIComponent(Sub_Folder);
                 upurl += "&Project_ID=" + encodeURIComponent(Project_ID);
                 upurl += "&Folder_Path1=" + encodeURIComponent(Folder_Path1);
-                window.open(upurl, "_blank");
+                window.open(upurl, "_parent");
             }
             function downloadicon(downdocup, revisionno) {
                 var downurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Report:Document_Revision_History_Drawing?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
@@ -689,6 +690,7 @@ function hideLoader() {
                                                                             status: "",
                                                                             createdby: createdby,
                                                                             createddt: createddt,
+                                                                            id: idss,
                                                                             action: '<a href="javascript:void(0);" class="edit-icon" data-index="' + fcmd[i]["Folder"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
                                                                         });
         
@@ -828,7 +830,7 @@ function hideLoader() {
                                                         style: "background-color: #868ff1; font-weight: bold;color: white;"
                                                     },
                                                     template: function (dataItem) {
-                                                        return '<a href="javascript:void(0);" class="folder-link"><span class="folder-name">' + dataItem.name + '</span></a>';
+                                                        return '<a href="javascript:void(0);" class="folder-link"><span class="folder-name" id='+ dataItem.id+'>' + dataItem.name + '</span></a>';
                                                     }
                                                 }, {
                                                     field: "status",
@@ -861,7 +863,9 @@ function hideLoader() {
                                                     template: function (dataItem) {
                                                         return dataItem.action;
                                                     }
-                                                }]
+                                                }
+                                                
+                                            ]
                                             }
                                         },
                                         initialView: "grid",
@@ -1087,12 +1091,12 @@ function handleHomeIconClick() {
                                     
                                     $("#filemanager").on("click", ".folder-link", function () {
                                         var folderName = $(this).find(".folder-name").text();
-                                       /// uploadlogic(folderName);
-                                         
+                                        var folids = $(this).find(".folder-name").attr("id");
+                                         //console.log(folids)
                                          vallevel = vallevel+","+folderName;
                                          vallevel =vallevel.split(',').filter(item => item !== 'null').join(',');
 
-                                        navigateToSubfolder(folderName);
+                                        navigateToSubfolder(folderName,null,folids);
                                         if(clickedFolder == "Home")
                                         {
                                             clickedFolder = null;
@@ -1158,7 +1162,7 @@ function handleHomeIconClick() {
                                     //     }
                                     // }
                                     
-                                    function navigateToSubfolder(folderName, vpf) {
+                                    function navigateToSubfolder(folderName, vpf,folids) {
                                         
                                         //countings = countings+1;
                                         //console.log(vallevel)
@@ -1226,13 +1230,13 @@ function handleHomeIconClick() {
         
                                                 var subfolderFcmd = subfolderResponse;
                                                 var subfolderGridData = [];
-                                              // console.log("subfolderFcmd",subfolderFcmd)
+                                               //console.log("subfolderFcmd",subfolderFcmd)
                                               
                                                 for (var i = 0; i < subfolderFcmd.length; i++) {
                                                     
                                                     var subproject = subfolderFcmd[i]["Project"]["display_value"];
                                                     var parentFolder = subfolderFcmd[i]["Parent_Folder"]["display_value"];
-                                                    var cfolder = subfolderFcmd[i]["Folder"];
+                                                    var cfolder = subfolderFcmd[i]["ID"];
                                                     var level = subfolderFcmd[i]["Level"];
                                                     var folo = subfolderFcmd[i]["Folder_Path.Folder"];
                                                     //console.log(folo)
@@ -1296,6 +1300,7 @@ function handleHomeIconClick() {
                                                                                         status: "",
                                                                                         createdby: subfolderFcmd[i]["Created_By"],
                                                                                         createddt: subfolderFcmd[i]["Created_D_T"],
+                                                                                        id:subfolderFcmd[i]["ID"],
                                                                                         action: '<a href="javascript:void(0);" class="childedit-icon" data-index="' + subfolderFcmd[i]["ID"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
                                                                                     });
                                                                                 }
@@ -1315,8 +1320,9 @@ function handleHomeIconClick() {
                                                 //console.log("Folder_Path1 from here",Folder_Path1)
                                                 Folder_Path1 += ","+folderName;
                                                     ///////////////////folderpermission////////////////////////////////////
-                                                    if (cfolder == folderName && prjj == subproject) {
-        
+                                                    if (cfolder == folids && prjj == subproject ) {
+                                                     //console.log("click", subfolderFcmd[i]["Folder"])
+                                                        
                                                         fcmid = subfolderFcmd[i]["ID"];
                                                         Project_ID = subfolderFcmd[i]["Project"]["ID"];
                                                         Folder1 = subfolderFcmd[i]["ID"];
@@ -1374,28 +1380,32 @@ function handleHomeIconClick() {
                                                                                         var initparams = ZOHO.CREATOR.UTIL.getInitParams();
                                                                                         //console.log(initparams)
                                                                                         if (initparams.loginUser == email) {
+                                                                                            
                                                                                             var folderPathArray = subfolderFcmd[i]["Folder_Path"];
+                                                                                            //console.log(folderPathArray)
                                                                                             Folder_Path = [];
                                                                                             for (var o = 0; o < folderPathArray.length; o++) {
                                                                                                 var folderPathId = folderPathArray[o]["ID"];
                                                                                                 Folder_Path.push(folderPathId);
+                                                                                                
                                                                                             }
                                                                                             
                                                                                             Project = subfolderFcmd[i]["Project"]["ID"];
                                                                                             Parent_Folder = subfolderFcmd[i]["ID"];
                                                                                             Folder_Path.push(Parent_Folder);
                                                                                            // Group_Name = [];
-                                                                                           if(prjj == subproject){
+                                                                                        //    if(prjj == subproject){
                                                                                             var gnm = subfolderFcmd[i]["Group_Name"]; 
                                                                                                for (var z = 0; z < gnm.length; z++) {
                                                                                                     var gngn = gnm[z]["ID"];
-                                                                                                     Group_Name.push(gngn);
+                                                                                                    Group_Name.push(gngn);
                                                                                 
-                                                                                                      }
+                                                                                                     // }
                                                                                                     }
-                                                                                            
+                                                                                                    
                                                                                             //console.log("im final broo",Folder_Path)
-                                                                                        }
+                                                                                                
+                                                                                    }
                                                                                     }
                                                                                 }
                                                                             }
@@ -1508,6 +1518,7 @@ function handleHomeIconClick() {
     status: widgetAdminData[z]["Status"]["display_value"],
     createdby: widgetAdminData[z]["Created_By"],
     createddt: widgetAdminData[z]["Created_D_T"],
+    id:widgetAdminData[z]["ID"],
     action: `
         <span class="iconsss" onclick="togglePopupMenu(this)">☰</span>
         <div id="popupMenu" class="popup-menu">
