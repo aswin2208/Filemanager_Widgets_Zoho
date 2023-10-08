@@ -463,8 +463,8 @@
             }
             function childediticon(chpfi, chid) {
                 var chediturl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Form:Folder_Creation_Mapping?&viewLinkName=Folder_Creation_Mapping_Report&FolderFrorm=Rename&zc_LoadIn=dialog&zc_Header=false";
-                chediturl += "&recLinkID=" + encodeURIComponent(chpfi);
-                chediturl += "&parent_id=" + encodeURIComponent(chid);
+                chediturl += "&recLinkID=" + encodeURIComponent(chid);
+                chediturl += "&parent_id=" + encodeURIComponent(chpfi);
                 window.open(chediturl, "_parent");
             }
         
@@ -736,6 +736,8 @@ function hideLoader() {
 }
 
  output = modifyKeys(outputwithid);
+
+ 
                                    
                                    //console.log(JSON.stringify(output, null, 2))
                                     //console.log("griddata level1",gridData)
@@ -928,20 +930,37 @@ function hideLoader() {
                                     var breadcrumbs = [];
                                     
                                     function ssupdateBreadcrumbss(folderData) {
-    const folders = folderData.split(','); 
-    breadcrumbs = folders; 
+    const folders = folderData.split(',');
+    breadcrumbs = folders;
 
-    breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
-        const isActive = index === breadcrumbs.length - 1;
-        const activeClass = isActive ? 'active-breadcrumb' : '';
-        return `<span class="breadcrumb-item ${activeClass}" data-index="${index}" data-id="${index + 1}">${crumb}</span>${separator}`;
-    }).join('');
+    const homeIcon = '<a id="breadcrumb-home-link" class="breadcrumb-home" href="#"><i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i></a>';
+   
+    
+    // Check if the breadcrumb list is empty
+    if (breadcrumbs.length === 0) {
+        breadcrumbsContainer.innerHTML = homeIcon;
+        
+        
+    } else {
+        breadcrumbsContainer.innerHTML = homeIcon + '&nbsp;' + separator; // Add the ">" symbol here
+        
+        breadcrumbsContainer.innerHTML += breadcrumbs.map((crumb, index) => {
+            const isActive = index === breadcrumbs.length - 1;
+            const activeClass = isActive ? 'active-breadcrumb' : '';
+            return `<span class="breadcrumb-item ${activeClass}" data-index="${index}" data-id="${index + 1}">${crumb}</span>${separator}`;
+        }).join('');
+    }
 
     const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
     breadcrumbItems.forEach(item => {
         item.addEventListener('click', sshandleBreadcrumbClickss);
     });
 }
+function handleHomeIconClick() {
+    console.log()
+}
+
+
 
 
 
@@ -1277,7 +1296,7 @@ function hideLoader() {
                                                                                         status: "",
                                                                                         createdby: subfolderFcmd[i]["Created_By"],
                                                                                         createddt: subfolderFcmd[i]["Created_D_T"],
-                                                                                        action: '<a href="javascript:void(0);" class="childedit-icon" data-index="' + subfolderFcmd[i]["Folder"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
+                                                                                        action: '<a href="javascript:void(0);" class="childedit-icon" data-index="' + subfolderFcmd[i]["ID"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
                                                                                     });
                                                                                 }
                                                                             }
@@ -1808,7 +1827,7 @@ function hideLoader() {
                                     $(document).on('click', '.childedit-icon', function () {
                                         var dataIndex = $(this).data('index');
                                         var cediticon = dataIndex;
-                                        //console.log(cfolder);
+                                       //console.log("clickedFolder",cediticon);
                                         // var config = {
                                         //     appName: "ern-pmis",
                                         //     reportName: "Folder_Creation_Mapping_Widgets",
@@ -1835,14 +1854,15 @@ function hideLoader() {
                                                             //console.log(chiediicon);
         
                                                             for (let i = 0; i < chiediicon.length; i++) {
-                                                                var cfol = chiediicon[i]["Folder"];
+                                                                var cfol = chiediicon[i]["ID"];
                                                                 var cfprj = chiediicon[i]["Project"]["display_value"]
                                                                 //console.log(cfol);
                                                                 if (prjj == cfprj) {
                                                                     if (cediticon == cfol) {
-                                                                        //console.log("kogamavan")
+                                                                                                                                               
                                                                         chpfi = chiediicon[i]["Parent_Folder"]["ID"];
                                                                         chid = chiediicon[i]["ID"];
+                                                                        //console.log(chpfi,chid)
                                                                         if (chpfi != null && chid != null) {
                                                                             childediticon(chpfi, chid);
                                                                         }
