@@ -280,6 +280,7 @@
         
         .iconsss {
             cursor: pointer;
+            
         }
 
        
@@ -287,9 +288,11 @@
             display: none;
             position: absolute;
             background-color: #f1f1f1;
+            left: 750px;
             min-width: 130px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
+            
         }
 
         
@@ -357,8 +360,8 @@
         <h1 class="header-name">Document Management System</h1>
     </header>
             <div id="breadcrumbs-container" class="sticky">
-                <a id="breadcrumb-home-link" class="breadcrumb-home" href="#">
-                    <i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i> </a>
+                <a id="breadcrumb-home-link" class="breadcrumb-home">
+                    <i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;" ></i> </a>
             </div>
     <div class="custom-model-main">
         <div class="custom-model-inner">
@@ -376,359 +379,363 @@
     </div>
     
     <script>
-        $(document).ready(function () {
-            
-            let currentfolderName;
-            let Project = null;
-            let Parent_Folder = null;
-            let Folder_Path = [];
-            let Group_Name = [];
-            let parent_id = null;
-            let Document_Upload = null;
-            let Sub_Folder = null;
-            let Folder1 = null;
-            let Project_ID = null;
-            let Folder_Path1 = null;
-            let downdocup = null;
-            let revisionno = null;
-            let bookdup = null;
-            let comdup = null;
-            let infdocup = null;
-            let fcmidsp = null;
-            let chid = null;
-            let chpfi = null;
-            let upprojectid = null;
-            
-            var vallevel = null;
-            const breadcrumbsContainer = document.getElementById('breadcrumbs-container');
-            const separator = '<span class="breadcrumb-separator"> > </span>';
-        
-            function openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name) {
-                
-                var formURL = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#form:Folder_Creation_Mapping?FolderFrorm=DocumentPage&zc_Header=false&zc_LoadIn=dialog";
-                formURL += "&Project=" + encodeURIComponent(Project);
-                if (Folder_Path.length > 0) {
-                    var folderPathIdsString = Folder_Path.join(",");
-                    formURL += "&Folder_Path=" + encodeURIComponent(folderPathIdsString);
-                }
-                formURL += "&Parent_Folder=" + encodeURIComponent(Parent_Folder);
-                if (Group_Name.length > 0) {
-                    var groupnameString = Group_Name.join(",");
-                    formURL += "&Group_Name=" + encodeURIComponent(Group_Name);
-                }
-                //console.log(Group_Name);
-                //console.log(Folder_Path);
-                window.open(formURL, "_parent");
-            }
-        
-            function openuploadform(parent_id, Document_Upload, Folder1, Sub_Folder, Project_ID, Folder_Path1) {
-                var upurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Page:Document_Upload_Page?NewuploadParm=docpage";
-                upurl += "&parent_id=" + encodeURIComponent(parent_id);
-                upurl += "&Document_Upload.Folder=" + encodeURIComponent(Document_Upload);
-                upurl += "&Folder1=" + encodeURIComponent(Folder1);
-                upurl += "&Sub_Folder=" + encodeURIComponent(Sub_Folder);
-                upurl += "&Project_ID=" + encodeURIComponent(Project_ID);
-                upurl += "&Folder_Path1=" + encodeURIComponent(Folder_Path1);
-                window.open(upurl, "_parent");
-            }
-            function downloadicon(downdocup, revisionno) {
-                var downurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Report:Document_Revision_History_Drawing?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
-                downurl += "&Document_Upload=" + encodeURIComponent(downdocup);
-                downurl += "&Revision_No=" + encodeURIComponent(revisionno);
-                window.open(downurl, "_parent");
-            }
-            function boookkicons(bookdup) {
-                if (bookdup != null) {
-                    var bookurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Report:Document_Management_History_Report?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
-                    bookurl += "&Document_Upload1=" + encodeURIComponent(bookdup);
-        
-                    window.open(bookurl, "_parent");
-                }
-            }
-            function commenttssicons(comdup) {
-        
-                var comurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Report:Comment_Resolution_Widgets?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
-                comurl += "&Document_Upload=" + encodeURIComponent(comdup);
-                window.open(comurl, "_parent");
-        
-            }
-            function inffooicon(infdocup) {
-                var infurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Report:Document_Revision_History_Drawing?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
-                infurl += "&Document_Upload=" + encodeURIComponent(infdocup);
-                window.open(infurl, "_parent");
-            }
-            function editticonone(fcmidsp) {
-                var editurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Form:Folder_Creation_Mapping?&viewLinkName=Folder_Creation_Mapping_Report&FolderFrorm=Rename&zc_LoadIn=dialog&zc_Header=false";
-                editurl += "&recLinkID=" + encodeURIComponent(fcmidsp);
-                window.open(editurl, "_parent");
-            }
-            function childediticon(chpfi, chid) {
-                var chediturl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#Form:Folder_Creation_Mapping?&viewLinkName=Folder_Creation_Mapping_Report&FolderFrorm=Rename&zc_LoadIn=dialog&zc_Header=false";
-                chediturl += "&recLinkID=" + encodeURIComponent(chid);
-                chediturl += "&parent_id=" + encodeURIComponent(chpfi);
-                window.open(chediturl, "_parent");
-            }
-        
+   $(document).ready(function () {
 
+     let currentfolderName;
+     let Project = null;
+     let Parent_Folder = null;
+     let Folder_Path = [];
+     let Group_Name = [];
+     let parent_id = null;
+     let Document_Upload = null;
+     let Sub_Folder = null;
+     let Folder1 = null;
+     let Project_ID = null;
+     let Folder_Path1 = null;
+     let downdocup = null;
+     let revisionno = null;
+     let bookdup = null;
+     let comdup = null;
+     let infdocup = null;
+     let refericons = null;
+     let fcmidsp = null;
+     let chid = null;
+     let chpfi = null;
+     let upprojectid = null;
+     var vallevel = null;
+     const breadcrumbsContainer = document.getElementById('breadcrumbs-container');
+     const separator = '<span class="breadcrumb-separator"> > </span>';
 
-            // $(".new-button").click(function () {
-            //     if (Project !== null && Parent_Folder !== null && Folder_Path !== null) {
-            //         Folder_Path.reverse();
-            //         openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name);
-            //         //console.log(Project,Folder_Path,Parent_Folder,Group_Name)
-            //     } else {
-            //         $(".custom-model-main").addClass('model-open');
-            //     }
-            // });
-            // $(".close-btn, .bg-overlay").click(function () {
-            //     $(".custom-model-main").removeClass('model-open');
-            // });
-            // $(".upload-button").click(function () {
-            //     if (parent_id !== null && Document_Upload !== null && Sub_Folder !== null && Folder1 !== null && Project_ID !== null && Folder_Path1 != null) {
-            //         openuploadform(parent_id, Document_Upload, Folder1, Sub_Folder, Project_ID, Folder_Path1);
-            //         //console.log(Folder1)
-        
-            //     } else {
-            //         $(".custom-model-main").addClass('model-open');
-            //         //alert("Folder_Path1",Folder_Path1)
-            //         // console.log("parent_id",parent_id, "Document_Upload",Document_Upload, "Folder1",Folder1,"Sub_Folder", Sub_Folder, "Project_ID",Project_ID, "Folder_Path1",Folder_Path1)
-        
-            //     }
-            // });
-            // $(".Group-button").click(function () {
-            //     var grpurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#report:Group_Masters_Page?zc_LoadIn=dialog&zc_MoreAction=false&zc_SecHeader=false&zc_AddRec=false";
-            //     window.open(grpurl, "_parent");
-            // });
+     function openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name) {
+
+       var formURL = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#form:Folder_Creation_Mapping?FolderFrorm=DocumentPage&zc_Header=false&zc_LoadIn=dialog";
+       formURL += "&Project=" + encodeURIComponent(Project);
+       if (Folder_Path.length > 0) {
+         var folderPathIdsString = Folder_Path.join(",");
+         formURL += "&Folder_Path=" + encodeURIComponent(folderPathIdsString);
+       }
+       formURL += "&Parent_Folder=" + encodeURIComponent(Parent_Folder);
+       if (Group_Name.length > 0) {
+         var groupnameString = Group_Name.join(",");
+         formURL += "&Group_Name=" + encodeURIComponent(Group_Name);
+       }
+       //console.log(Group_Name);
+       //console.log(Folder_Path);
+       window.open(formURL, "_parent");
+     }
+
+     function openuploadform(parent_id, Document_Upload, Folder1, Sub_Folder, Project_ID, Folder_Path1) {
+       var upurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Page:Document_Upload_Page?NewuploadParm=docpage";
+       upurl += "&parent_id=" + encodeURIComponent(parent_id);
+       upurl += "&Document_Upload.Folder=" + encodeURIComponent(Document_Upload);
+       upurl += "&Folder1=" + encodeURIComponent(Folder1);
+       upurl += "&Sub_Folder=" + encodeURIComponent(Sub_Folder);
+       upurl += "&Project_ID=" + encodeURIComponent(Project_ID);
+       upurl += "&Folder_Path1=" + encodeURIComponent(Folder_Path1);
+       window.open(upurl, "_parent");
+     }
+
+     function downloadicon(downdocup, revisionno) {
+       var downurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Report:Document_Revision_History_Drawing?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
+       downurl += "&Document_Upload=" + encodeURIComponent(downdocup);
+       downurl += "&Revision_No=" + encodeURIComponent(revisionno);
+       window.open(downurl, "_parent");
+     }
+
+     function boookkicons(bookdup) {
+       if (bookdup != null) {
+         var bookurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Report:Document_Management_History_Report?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
+         bookurl += "&Document_Upload1=" + encodeURIComponent(bookdup);
+
+         window.open(bookurl, "_parent");
+       }
+     }
+
+     function commenttssicons(comdup) {
+
+       var comurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Report:Comment_Resolution_Widgets?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
+       comurl += "&Document_Upload=" + encodeURIComponent(comdup);
+       window.open(comurl, "_parent");
+
+     }
+
+     function inffooicon(infdocup) {
+       var infurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Report:Document_Revision_History_Drawing?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
+       infurl += "&Document_Upload=" + encodeURIComponent(infdocup);
+       window.open(infurl, "_parent");
+     }
+
+     function refericon(refericons) {
+       var infurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Report:Reference_Docs_Drawings?zc_LoadIn=dialog&zc_AddRec=false&zc_MoreAction=false&zc_RecPrint=false&zc_Print=false&zc_Export=false&zc_Search=false&zc_RecSelect=false&zc_Filter=false&zc_ColMenu=false";
+       infurl += "&Document_Upload=" + encodeURIComponent(refericons);
+       window.open(infurl, "_parent");
+     }
+
+     function editticonone(fcmidsp) {
+       var editurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Form:Folder_Creation_Mapping?&viewLinkName=Folder_Creation_Mapping_Report&FolderFrorm=Rename&zc_LoadIn=dialog&zc_Header=false";
+       editurl += "&recLinkID=" + encodeURIComponent(fcmidsp);
+       window.open(editurl, "_parent");
+     }
+
+     function childediticon(chpfi, chid) {
+       var chediturl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Form:Folder_Creation_Mapping?&viewLinkName=Folder_Creation_Mapping_Report&FolderFrorm=Rename&zc_LoadIn=dialog&zc_Header=false";
+       chediturl += "&recLinkID=" + encodeURIComponent(chid);
+       chediturl += "&parent_id=" + encodeURIComponent(chpfi);
+       window.open(chediturl, "_parent");
+     }
 
 
 
+    
+     ////////////toolbar button//////////////////////////////           
+     $(document).on("click", ".Group-button", function () {
+       var grpurl = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#report:Group_Masters_Page?zc_LoadIn=dialog&zc_MoreAction=false&zc_SecHeader=false&zc_AddRec=false";
+       window.open(grpurl, "_parent");
+     });
 
- ////////////toolbar button//////////////////////////////           
- $(document).on("click", ".Group-button", function() {
-    var grpurl = "https://creatorapp.zoho.in/rcidernpmis/environment/development/ern-pmis/#report:Group_Masters_Page?zc_LoadIn=dialog&zc_MoreAction=false&zc_SecHeader=false&zc_AddRec=false";
-                window.open(grpurl, "_parent");
-});
+     $(document).on("click", ".upload-button", function () {
+       if (parent_id !== null && Document_Upload !== null && Sub_Folder !== null && Folder1 !== null && Project_ID !== null && Folder_Path1 != null) {
+         openuploadform(parent_id, Document_Upload, Folder1, Sub_Folder, Project_ID, Folder_Path1);
+         //console.log(Folder_Path1)
 
-$(document).on("click", ".upload-button", function() {
-    if (parent_id !== null && Document_Upload !== null && Sub_Folder !== null && Folder1 !== null && Project_ID !== null && Folder_Path1 != null) {
-                    openuploadform(parent_id, Document_Upload, Folder1, Sub_Folder, Project_ID, Folder_Path1);
-                    //console.log(Folder1)
-        
-                } else {
-                    $(".custom-model-main").addClass('model-open');
-                    //alert("Folder_Path1",Folder_Path1)      
-                }
-});
+       } else {
+         $(".custom-model-main").addClass('model-open');
+         //alert("Folder_Path1",Folder_Path1)      
+       }
+     });
 
-$(document).on("click", ".new-button", function() {
-    if (Project !== null && Parent_Folder !== null && Folder_Path !== null) {
-                    Folder_Path.reverse();
-                    openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name);
-                    //console.log(Project,Folder_Path,Parent_Folder,Group_Name)
-                } else {
+     $(document).on("click", ".new-button", function () {
+       if (Project !== null && Parent_Folder !== null && Folder_Path !== null) {
+         Folder_Path.reverse();
+         openZohoCreatorForm(Project, Folder_Path, Parent_Folder, Group_Name);
+         //console.log(Project,Folder_Path,Parent_Folder,Group_Name)
+       } else {
+
+         $(".custom-model-main").addClass('model-open');
+       }
+     });
+
+     $(".close-btn, .bg-overlay").click(function () {
+       $(".custom-model-main").removeClass('model-open');
+     });
+     ///////////////////////////////////////////////////////////
+
+
+
+     /////////////PageLoader////////////////////////////////////////////
+     function showLoader() {
+       document.getElementById("page-loader").style.display = "block";
+       // console.log("showing")
+     }
+
+
+     function hideLoader() {
+       document.getElementById("page-loader").style.display = "none";
+       // console.log("hiding")
+     }
+     ///////////////////////////////////////////////////////////////////
+
+
+
+     //////////////////////Toolbar Button Hide/Show////////////////////
+     function showButton() {
+       $(".new-button").show();
+       $(".Group-button").show()
+     }
+
+     function hideButton() {
+       $(".new-button").hide();
+       $(".Group-button").hide();
+     }
+
+     function showupButton() {
+       $(".upload-button").show();
+     }
+
+     function hideupButton() {
+       $(".upload-button").hide();
+     }
+     //////////////////////////////////////////////////////////////////////            
+
+
+     ZOHO.CREATOR.init().then(function (data) {
+
+
+
+       var greport = {
+         reportName: "Group_Masters_widgets",
+         criteria: "ID!=0" || "ID==0",
+       };
+       ZOHO.CREATOR.API.getAllRecords(greport).then(function (gresponse) {
+         var ureport = {
+           reportName: "Admin_User_Creations",
+           criteria: "ID!=0" || "ID==0",
+         };
+         ZOHO.CREATOR.API.getAllRecords(ureport).then(function (uresponse) {
+
+
+           var groupmaster = gresponse.data;
+           var usercreation = uresponse.data;
+           var config = {
+             appName: "pmis-lite",
+             reportName: "Folder_Creation_Mapping_Widgets",
+           };
+
+           ZOHO.CREATOR.API.getRecordCount(config)
+             .then(function (response) {
+               var rescount = parseInt(response.result.records_count)
+               var pageSize = 200;
+               var totalPages = Math.ceil(rescount / pageSize);
+
+
+               for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                 var datas = {
+                   reportName: "Folder_Creation_Mapping_Widgets",
+                   criteria: "ID!=0" || "ID==0",
+                   fields: "Folder,Status,Created_By,Created_D_T",
+                   page: pageNumber,
+                   pageSize: pageSize,
+                  
+                 };
+                 
+                 ZOHO.CREATOR.API.getAllRecords(datas).then(function (response) {
+                   var fcmd = response.data;
+                   //console.log(fcmd)
+                   const outputwithid = {};
+                   var output = {};
+                   var gridData = [];
+                   
+                  
+                   for (let i = 0; i < fcmd.length; i++) {
+
+                     
+                     const rp = fcmd[i]["Project"]["display_value"];
+                     const parentFolderid = fcmd[i]["Parent_Folder"]["ID"];
+                     const folderid = fcmd[i]["ID"];
+                     const foldernames = fcmd[i]["Folder"];
+                     const parentFoldernames = fcmd[i]["Parent_Folder"]["display_value"];
+ 
+
+                     var initparams = ZOHO.CREATOR.UTIL.getInitParams();
+                     for (let j = 0; j < usercreation.length; j++) {
+                       var uemail = usercreation[j]["E_Mail"];
+                       if (initparams.loginUser == uemail) {
+                         var usrname = usercreation[j]["Name"];
+                         for (let k = 0; k < groupmaster.length; k++) {
+                           var grpname = [];
+                           var gname = groupmaster[k]["User_Name"];
+                           for (var l = 0; l < gname.length; l++) {
+                             var ggname = gname[l]["display_value"];
+                             grpname.push(ggname);
+                           }
+                           for (var m = 0; m < grpname.length; m++) {
+                             var ginx = grpname[m];
+                             if (ginx == usrname) {
+                               var gnames = groupmaster[k]["Group_Name"];
+                               var fcmgn = fcmd[i]["Group_Name"];
+                               let fcrtmap = [];
+                               for (var n = 0; n < fcmgn.length; n++) {
+                                 var ffccmm = fcmgn[n]["display_value"];
+                                 fcrtmap.push(ffccmm);
+                               }
+                               for (var o = 0; o < fcrtmap.length; o++) {
+                                 var fcmgroup = fcrtmap[o];
+                                 if (fcmgroup == gnames) {
+                                   const idss = fcmd[i]["ID"];
+                                   const level = fcmd[i]["Level"];
+                                   var filecount = fcmd[i]["File_Count"];
+                                   const createdby = fcmd[i]["Created_By"];
+                                   const createddt = fcmd[i]["Created_D_T"];
+                     
+
+                                   const folderKey = `${foldernames}_${folderid}`;
+                                   const parentFolderKey = `${parentFoldernames}_${parentFolderid}`;
+                                   
+
+                                   if (!outputwithid[rp]) {
+                                     outputwithid[rp] = {};
+                                   }
+
+                                   if (!outputwithid[rp][folderKey]) {
+                                     outputwithid[rp][folderKey] = {};
+                                   }
+                                   outputwithid[rp][folderKey]['id'] = idss;
+                                   outputwithid[rp][folderKey]['createddate'] = createddt;
+                                   if (parentFolderid) {
+                                     if (!outputwithid[rp][parentFolderKey]) {
+                                       outputwithid[rp][parentFolderKey] = {};
+                                     }
+
+                                     outputwithid[rp][parentFolderKey][folderKey] = outputwithid[rp][folderKey];
+                                     delete outputwithid[rp][folderKey];
+                                   }
+                                   
+                                   if (!parentFolderid) {
+
+                                     gridData.push({
+                                       type: '<i class="fa fa-folder" style="font-size:16px;color:#F3D434"></i>',
+                                       name: foldernames,
+                                       status: "",
+                                       createdby: createdby,
+                                       createddt: createddt,
+                                       id: idss,
+                                       action: '<a href="javascript:void(0);" class="edit-icon" data-index="' + fcmd[i]["Folder"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
+                                     });
+                                     
+                                   }
+                                   
+
+
+             
+
+
+
+
+
+
+
+                                 }
+
+                               }
+                             }
+                           }
+                         }
+                       }
+                     }
                     
-                    $(".custom-model-main").addClass('model-open');
-                }
-});
 
-$(".close-btn, .bg-overlay").click(function () {
-                $(".custom-model-main").removeClass('model-open');
-            });
-///////////////////////////////////////////////////////////
+                    
 
 
 
-/////////////PageLoader////////////////////////////////////////////
-function showLoader() {
-    document.getElementById("page-loader").style.display = "block";
-    // console.log("showing")
-}
+                     $(document).on('click', '.edit-icon', function () {
+                       var dataIndex = $(this).data('index');
+                       var editicon = dataIndex;
 
+                       if (editicon == rp && fcmd[i]["Level"] == "1") {
+                         fcmidsp = fcmd[i]["ID"];
+                         // console.log(fcmidsp);
+                         editticonone(fcmidsp);
+                       }
+                     });
+                   }
 
-function hideLoader() {
-    document.getElementById("page-loader").style.display = "none";
-    // console.log("hiding")
-}
-///////////////////////////////////////////////////////////////////
-
-
-
-//////////////////////Toolbar Button Hide/Show////////////////////
-            function showButton() {
-                $(".new-button").show();
-                $(".Group-button").show()
-            }
-            function hideButton() {
-                $(".new-button").hide();
-                $(".Group-button").hide();
-            }
-            function showupButton() {
-                $(".upload-button").show();
-            }
-            function hideupButton() {
-                $(".upload-button").hide();
-            }
-//////////////////////////////////////////////////////////////////////            
-
-
-            ZOHO.CREATOR.init().then(function (data) {
-        
-                            
-
-                    var greport = {
-                        reportName: "Group_Masters_widgets",
-                        criteria: "ID!=0" || "ID==0",
-                    };
-                    ZOHO.CREATOR.API.getAllRecords(greport).then(function (gresponse) {
-                        var ureport = {
-                            reportName: "Admin_User_Creations",
-                            criteria: "ID!=0" || "ID==0",
-                        };
-                        ZOHO.CREATOR.API.getAllRecords(ureport).then(function (uresponse) {
-                           
-                               
-                                var groupmaster = gresponse.data;
-                                var usercreation = uresponse.data;
-                                var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Folder_Creation_Mapping_Widgets",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
-                                                
-        
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                var datas = {
-                                    reportName: "Folder_Creation_Mapping_Widgets",
-                                    criteria: "ID!=0" || "ID==0",
-                                    fields: "Folder,Status,Created_By,Created_D_T",
-                                    page: pageNumber,
-                                    pageSize: pageSize,
-                                };
-                                ZOHO.CREATOR.API.getAllRecords(datas).then(function (response) {
-                                    var fcmd = response.data;
-                                    //console.log(fcmd)
-                                    const outputwithid ={};
-                                    var output = {};
-                                    var gridData = [];
-        
-                                         
-                                    for (let i = 0; i < fcmd.length; i++) {
-                                        
-                                        const createdby = fcmd[i]["Created_By"];
-                                        const createddt = fcmd[i]["Created_D_T"];
-
-                                        const rp = fcmd[i]["Project"]["display_value"];
-    const parentFolderid = fcmd[i]["Parent_Folder"]["ID"];
-    const folderid = fcmd[i]["ID"];
-    const foldernames = fcmd[i]["Folder"];
-    const parentFoldernames = fcmd[i]["Parent_Folder"]["display_value"];
-
-                                        
-                                        var initparams = ZOHO.CREATOR.UTIL.getInitParams();
-                                        for (let j = 0; j < usercreation.length; j++) {
-                                            var uemail = usercreation[j]["E_Mail"];
-                                            if (initparams.loginUser == uemail) {
-                                                var usrname = usercreation[j]["Name"];
-                                                for (let k = 0; k < groupmaster.length; k++) {
-                                                    var grpname = [];
-                                                    var gname = groupmaster[k]["User_Name"];
-                                                    for (var l = 0; l < gname.length; l++) {
-                                                        var ggname = gname[l]["display_value"];
-                                                        grpname.push(ggname);
-                                                    }
-                                                    for (var m = 0; m < grpname.length; m++) {
-                                                        var ginx = grpname[m];
-                                                        if (ginx == usrname) {
-                                                            var gnames = groupmaster[k]["Group_Name"];
-                                                            var fcmgn = fcmd[i]["Group_Name"];
-                                                            let fcrtmap = [];
-                                                            for (var n = 0; n < fcmgn.length; n++) {
-                                                                var ffccmm = fcmgn[n]["display_value"];
-                                                                fcrtmap.push(ffccmm);
-                                                            }
-                                                            for (var o = 0; o < fcrtmap.length; o++) {
-                                                                var fcmgroup = fcrtmap[o];
-                                                                if (fcmgroup == gnames) {
-                                                                    const idss = fcmd[i]["ID"];
-                                                                    const level = fcmd[i]["Level"];
-                                                                    
-                                                                    
-                                                                        
-                                                                    const folderKey = `${foldernames}_${folderid}`;
-    const parentFolderKey = `${parentFoldernames}_${parentFolderid}`;
-
-
-    if (!outputwithid[rp]) {
-        outputwithid[rp] = {};
-    }
-
-    if (!outputwithid[rp][folderKey]) {
-        outputwithid[rp][folderKey] = {};
-    }
-    outputwithid[rp][folderKey]['id'] = idss;
-    if (parentFolderid) {
-        if (!outputwithid[rp][parentFolderKey]) {
-            outputwithid[rp][parentFolderKey] = {};
-        }
-
-        outputwithid[rp][parentFolderKey][folderKey] = outputwithid[rp][folderKey];
-        delete outputwithid[rp][folderKey];
-    }
-                                                              
-
-        
-                                                                    if (!parentFolderid) {
-        
-                                                                        gridData.push({
-                                                                            type: '<i class="fa fa-folder" style="font-size:16px;color:#F3D434"></i>',
-                                                                            name: foldernames,
-                                                                            status: "",
-                                                                            createdby: createdby,
-                                                                            createddt: createddt,
-                                                                            id: idss,
-                                                                            action: '<a href="javascript:void(0);" class="edit-icon" data-index="' + fcmd[i]["Folder"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
-                                                                        });
-        
-                                                                    }
-
-                                                                     
-        
-                                                                }
-        
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        $(document).on('click', '.edit-icon', function () {
-                                            var dataIndex = $(this).data('index');
-                                            var editicon = dataIndex;
-        
-                                            if (editicon == rp && fcmd[i]["Level"] == "1") {
-                                                fcmidsp = fcmd[i]["ID"];
-                                                // console.log(fcmidsp);
-                                                editticonone(fcmidsp);
-                                            }
-                                        });
-                                    }
-
-                                    function modifyKeys(obj) {
+                   function modifyKeys(obj) {
   if (typeof obj === 'object') {
     if (Array.isArray(obj)) {
       return obj.map(item => modifyKeys(item));
     } else {
       const modifiedObj = {};
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          const newKey = key.split('_')[0];
-          modifiedObj[newKey] = modifyKeys(obj[key]);
-        }
+      // Sort keys based on createddate property in ascending order
+      const sortedKeys = Object.keys(obj).sort((key1, key2) => {
+        const date1 = new Date(obj[key1].createddate);
+        const date2 = new Date(obj[key2].createddate);
+        return date1 - date2;
+      });
+
+      for (const key of sortedKeys) {
+        const newKey = key.split('_')[0];
+        modifiedObj[newKey] = modifyKeys(obj[key]);
       }
       return modifiedObj;
     }
@@ -737,146 +744,180 @@ function hideLoader() {
   }
 }
 
- output = modifyKeys(outputwithid);
+                   inputData = modifyKeys(outputwithid);
 
- 
-                                   
-                                   //console.log(JSON.stringify(output, null, 2))
-                                    //console.log("griddata level1",gridData)
-                                    var navigationHtml = '<ul id="custom-navigation">';
-                                    for (var folder in output) {
-                                        if (output.hasOwnProperty(folder)) {
-        
-                                            navigationHtml += '<li><a href="javascript:void(0);" class="project-link" ><i class="fas fa-chevron-right icon"></i>' + '&nbsp;' +folder + '</a>';
-                                            generateNavigationHtml(output[folder]);
-                                            navigationHtml += '</li>';
-                                        }
-                                    }
-                                    navigationHtml += '</ul>';
-        
-                                    function generateNavigationHtml(subfolders) {
-                                        // console.log(JSON.stringify(subfolders, null, 2))
-                                        if (Object.keys(subfolders).length > 0) {
-                                            navigationHtml += '<ul class="subfolders">';
-                                            for (var subfolder in subfolders) {
-        
-                                                if (subfolders.hasOwnProperty(subfolder)) {
-                                                    var subfolderId = subfolders[subfolder].id || '';
-                                                    if (subfolder !== 'id') {
-        
-                                                        navigationHtml += '<li><a href="javascript:void(0);" class="level-link" id="' + subfolderId + '"><i class="fas fa-chevron-right icon"></i>' + '&nbsp;' + subfolder + '</a>';
-                                                        generateNavigationHtml(subfolders[subfolder]);
-                                                        navigationHtml += '</li>';
-                                                    }
-                                                    //console.log(subfolders.id)
-                                                }
-                                            }
-                                            navigationHtml += '</ul>';
-                                        }
-                                    }
+                   
+for (const key in inputData) {
+  if (inputData.hasOwnProperty(key) && typeof inputData[key] === 'object') {
+    const innerData = inputData[key][key];
+    output[key] = innerData;
+  }
+}
 
 
 
+                   //console.log(JSON.stringify(inputData, null, 2))
+                   //console.log("griddata level1",gridData)
+                   var navigationHtml = '<ul id="custom-navigation">';
+                   for (var folder in output) {
+                     if (output.hasOwnProperty(folder)) {
+                       var folderId = output[folder].id || '';
+                       
+                       for (let i = 0; i < fcmd.length; i++) {
+                        var id = fcmd[i]["ID"];
+                        
+                        if (id == folderId)
+                        {
+                          var filecount = fcmd[i]["File_Count"];
+                        
+                       navigationHtml += '<li><a href="javascript:void(0);" class="project-link" id="' + folderId + '"><i class="fas fa-chevron-right icon"></i>' + '&nbsp;' + folder + '&nbsp;' + "("+filecount+")"+'</a>';
+                       generateNavigationHtml(output[folder]);
+                       navigationHtml += '</li>';
+                        }
+                       }
+                     }
+                   }
+                   navigationHtml += '</ul>';
 
-        
-                                    $("#filemanager").kendoFileManager({
-                                        breadcrumb: false,
-                                        dataSource: {
-                                            data: gridData,
-                                            schema: {
-                                                model: {
-                                                    fields: {
-                                                        type: {
-                                                            type: "html"
-                                                        },
-                                                        name: {
-                                                            type: "string"
-                                                        },
-                                                        status: {
-                                                            type: "string"
-                                                        },
-                                                        createdby: {
-                                                            type: "string"
-                                                        },
-                                                        createddt: {
-                                                            type: "string"
-                                                        },
-                                                        action: {
-                                                            type: "html"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                        },
-                                        views: {
-                                            grid: {
-                                                resizable: true,
-                                                columns: [{
-                                                    field: "type",
-                                                    title: "Type",
-                                                    width: 60,
-                                                    headerAttributes: {
-                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
-                                                    },
-                                                    template: function (dataItem) {
-                                                        return dataItem.type;
-                                                    }
-                                                }, 
-                                               {
-                                                    field: "name",
-                                                    title: "Folder/File",
-                                                    
-                                                    headerAttributes: {
-                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
-                                                    },
-                                                    template: function (dataItem) {
-                                                        return '<a href="javascript:void(0);" class="folder-link"><span class="folder-name" id='+ dataItem.id+'>' + dataItem.name + '</span></a>';
-                                                    }
-                                                }, {
-                                                    field: "status",
-                                                    title: "Status",
-                                                    width: 130,
-                                                    headerAttributes: {
-                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
-                                                    },
-                                                }, {
-                                                    field: "createdby",
-                                                    title: "CreatedBy",
-                                                    width: 180,
-                                                    headerAttributes: {
-                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
-                                                    },
-                                                }, {
-                                                    field: "createddt",
-                                                    title: "Created D&T",
-                                                    width: 180,
-                                                    headerAttributes: {
-                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
-                                                    },
-                                                }, {
-                                                    field: "action",
-                                                    title: "Action",
-                                                    width: 80,
-                                                    headerAttributes: {
-                                                        style: "background-color: #868ff1; font-weight: bold;color: white;"
-                                                    },
-                                                    template: function (dataItem) {
-                                                        return dataItem.action;
-                                                    }
-                                                }
-                                                
-                                            ]
-                                            }
-                                        },
-                                        initialView: "grid",
-                                        navigation: false,
-                                        
-                                        toolbar: {
-                                            items: [
-                                                  {
-                                                name: "spacer"
-                                            }, {
-                                                template: '<div class="header-icons"> \
+                   function generateNavigationHtml(subfolders) {
+                     // console.log(JSON.stringify(subfolders, null, 2))
+                     if (Object.keys(subfolders).length > 0) {
+                       navigationHtml += '<ul class="subfolders">';
+                        
+                       for (var subfolder in subfolders) {
+
+                         if (subfolders.hasOwnProperty(subfolder)) {
+                           var subfolderId = subfolders[subfolder].id || '';
+                           for (let i = 0; i < fcmd.length; i++) {
+                        var id = fcmd[i]["ID"];
+                        
+                        if (id == subfolderId)
+                        {
+                          var filecount = fcmd[i]["File_Count"];
+                          var createddatetime = fcmd[i]["Created_D_T"];
+                           if (subfolder !== 'id') {
+
+                             navigationHtml += '<li><a href="javascript:void(0);" class="level-link" id="' + subfolderId + '"><i class="fas fa-chevron-right icon"></i>' + '&nbsp;' + subfolder +'&nbsp;' +"("+filecount+")"+'</a>';
+                             generateNavigationHtml(subfolders[subfolder]);
+                             navigationHtml += '</li>';
+                           }
+                           //console.log(subfolders.id)
+                          }
+                          }
+                          }
+                       }
+                       navigationHtml += '</ul>';
+                     }
+                   }
+
+
+
+
+                   
+                   $("#filemanager").kendoFileManager({
+                     breadcrumb: false,
+                     dataSource: {
+                       data: gridData,
+                       schema: {
+                         model: {
+                           fields: {
+                             type: {
+                               type: "html"
+                             },
+                             name: {
+                               type: "string"
+                             },
+                             status: {
+                               type: "string"
+                             },
+                             createdby: {
+                               type: "string"
+                             },
+                             createddt: {
+                               type: "string"
+                             },
+                             action: {
+                               type: "html"
+                             }
+                           }
+                         }
+                       },
+                      
+                     },
+                     views: {
+                       grid: {
+                         resizable: true,
+                         columns: [{
+                             field: "type",
+                             title: "Type",
+                             width: 60,
+                             headerAttributes: {
+                               style: "background-color: #868ff1; font-weight: bold;color: white;"
+                             },
+                             template: function (dataItem) {
+    return '<a href="javascript:void(0);" class="foldertype-link"><span class="folder-type" id="'+ dataItem.status + '">' + dataItem.type + '</span></a>';
+}
+
+
+                           },
+                           {
+                             field: "name",
+                             title: "Folder/File",
+                             
+                             headerAttributes: {
+                               style: "background-color: #868ff1; font-weight: bold;color: white;"
+                             },
+                             template: function (dataItem) {
+                               return '<a href="javascript:void(0);" class="folder-link"><span class="folder-name" id=' + dataItem.id + '>' + dataItem.name + '</span></a>';
+                             }
+                           }, {
+                             field: "status",
+                             title: "Status",
+                             width: 130,
+                             sortable: false,
+                             headerAttributes: {
+                               style: "background-color: #868ff1; font-weight: bold;color: white;"
+                             },
+                             
+                           }, {
+                             field: "createdby",
+                             title: "CreatedBy",
+                             width: 180,
+                             sortable: false,
+                             headerAttributes: {
+                               style: "background-color: #868ff1; font-weight: bold;color: white;"
+                             },
+                           }, {
+                             field: "createddt",
+                             title: "Created D&T",
+                             width: 180,
+                             headerAttributes: {
+                               style: "background-color: #868ff1; font-weight: bold;color: white;"
+                             },
+                           }, {
+                             field: "action",
+                             title: "Action",
+                             width: 80,
+                             sortable: false,
+                             headerAttributes: {
+                               style: "background-color: #868ff1; font-weight: bold;color: white;"
+                             },
+                             template: function (dataItem) {
+                               return dataItem.action;
+                             }
+                           }
+
+                         ]
+                       }
+                     },
+                     initialView: "grid",
+                     navigation: false,
+
+                     toolbar: {
+                       items: [{
+                         name: "spacer"
+                       }, {
+                         template: '<div class="header-icons"> \
                 <a class="social group Group-button"> \
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-people" viewBox="0 0 16 16"> \
                         <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" /> \
@@ -896,1047 +937,1111 @@ function hideLoader() {
                     </svg> \
                 </a> \
             </div>'
-        }
-                                        ]
-                                        },
-                                        contextMenu: {
-                                            // items: [{
-                                            //     name: "rename"
-                                            // }, {
-                                            //     name: "delete"
-                                            // }]
-                                        },
-                                        draggable: false,
-                                        resizable: true,
-                                        
-                                    });
-                                    var fileManager = $("#filemanager").data("kendoFileManager");
-                                    //console.log("level1",fileManager.dataSource.data())
-                                    $("#filemanager .k-filemanager-navigation").html(navigationHtml);
-                                    $(".project-link, .level-link").click(function () {
-                                        var icon = $(this).find('i.icon');
-                                        icon.toggleClass('fa-chevron-right fa-chevron-down');
-                                        $(this).next(".subfolders").toggleClass("show");
-                                        if (event.target.tagName === 'A') {
-                                            var folderName = $(this).text().trim();
-                                            var allid1 = $(this).attr("id");
-                                            updateBreadcrumbs(allid1);
-                                            //console.log(allid1)
-                                        }
-                                    });
-        
-                                    $(document).ready(function () {
+                       }]
+                     },
+                     contextMenu: {
+                       // items: [{
+                       //     name: "rename"
+                       // }, {
+                       //     name: "delete"
+                       // }]
+                     },
+                     draggable: false,
+                     resizable: true,
 
-             hideButton();
-            hideupButton();
-})
-                                    //////////////////////////////////////////////////////////////////////////////////////////////////    
-                                    var breadcrumbs = [];
-                                    
-                                    function ssupdateBreadcrumbss(folderData) {
-    const folders = folderData.split(',');
-    breadcrumbs = folders;
+                   });
+                   
+                   
+                   var allid1;
+                   var fileManager = $("#filemanager").data("kendoFileManager");
+                   //console.log("level1",fileManager.dataSource.data())
+                   $("#filemanager .k-filemanager-navigation").html(navigationHtml);
+                   $(".project-link, .level-link" ).click(function () {
+                     var icon = $(this).find('i.icon');
+                     icon.toggleClass('fa-chevron-right fa-chevron-down');
+                     $(this).next(".subfolders").toggleClass("show");
+                     if (event.target.tagName === 'A') {
+                       var folderName = $(this).text().trim();
+                        allid1 = $(this).attr("id");
+                       updateBreadcrumbs(allid1);
+                       //console.log(allid1)
+                     }
+                   });
 
-    const homeIcon = '<a id="breadcrumb-home-link" class="breadcrumb-home" href="#"><i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i></a>';
-   
-    
-    // Check if the breadcrumb list is empty
-    if (breadcrumbs.length === 0) {
-        breadcrumbsContainer.innerHTML = homeIcon;
-        
-        
-    } else {
-        breadcrumbsContainer.innerHTML = homeIcon + '&nbsp;' + separator; // Add the ">" symbol here
-        
-        breadcrumbsContainer.innerHTML += breadcrumbs.map((crumb, index) => {
-            const isActive = index === breadcrumbs.length - 1;
-            const activeClass = isActive ? 'active-breadcrumb' : '';
-            return `<span class="breadcrumb-item ${activeClass}" data-index="${index}" data-id="${index + 1}">${crumb}</span>${separator}`;
-        }).join('');
-    }
+                   $(document).ready(function () {
+                    var filemanager = $("#filemanager").getKendoFileManager();
+                   $.extend(filemanager.defaultSortOption, {
+            field:"createddt", 
+             dir:"desc"
+          });
+          filemanager.dataSource.sort([filemanager.folderSortOption, filemanager.defaultSortOption]);
+                     hideButton();
+                     hideupButton();
+                   })
+                   //////////////////////////////////////////////////////////////////////////////////////////////////    
+                   var breadcrumbs = [];
 
-    const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
-    breadcrumbItems.forEach(item => {
-        item.addEventListener('click', sshandleBreadcrumbClickss);
-    });
-}
-function handleHomeIconClick() {
-    console.log()
-}
+                   function ssupdateBreadcrumbss(folderData) {
+                     const folders = folderData.split(',');
+                     breadcrumbs = folders;
+
+                     const homeIcon = '<a id="breadcrumb-home-link" class="breadcrumb-home"><i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;" href=""></i></a>';
 
 
+                     
+                     if (breadcrumbs.length === 0) {
+                       breadcrumbsContainer.innerHTML = homeIcon;
+
+
+                     } else {
+                       breadcrumbsContainer.innerHTML = homeIcon + '&nbsp;' + separator; // Add the ">" symbol here
+
+                       breadcrumbsContainer.innerHTML += breadcrumbs.map((crumb, index) => {
+                         const isActive = index === breadcrumbs.length - 1;
+                         const activeClass = isActive ? 'active-breadcrumb' : '';
+                         return `<span class="breadcrumb-item ${activeClass}" data-index="${index}" data-id="${index + 1}">${crumb}</span>${separator}`;
+                       }).join('');
+                     }
+
+                     const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
+                     breadcrumbItems.forEach(item => {
+                       item.addEventListener('click', sshandleBreadcrumbClickss);
+                     });
+                     const homeIconLink = breadcrumbsContainer.querySelector('#breadcrumb-home-link');
+  homeIconLink.addEventListener('click', function() {
+    Homes();
+  });
+                   }
+
+                   var clickedFolder;
+
+                   function sshandleBreadcrumbClickss(event) {
+                     const clickedIndex = event.target.getAttribute('data-index');
+                     const clickedId = event.target.getAttribute('data-id');
+                     console.log('Clicked ID:', clickedId);
+                     clickedFolder = breadcrumbs[clickedIndex];
+
+                    //  if (clickedFolder == 'Home') {
+
+                    //    Homes();
+
+
+                    //  } else {
+
+
+                       const vallevelArray = vallevel.split(',');
+
+
+                       if (clickedId >= 1 && clickedId <= vallevelArray.length) {
+
+                         vallevelArray.splice(clickedId);
+
+
+                         vallevel = vallevelArray.join(',');
+                       }
+
+
+                       navigateToSubfolder(clickedFolder, null);
+                       //uploadlogic(clickedFolder)
+                     //}
+                   }
+
+                   function Homes() {
+                    
+                    breadcrumbsContainer.innerHTML = `<span class="breadcrumb-item active-breadcrumb" data-index="0"><i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i></span>`;
+                     breadcrumbs.length = 0;
+                     vallevel = null;
+                     var fileManager = $("#filemanager").data("kendoFileManager");
+                     fileManager.refresh();
+                     fileManager.dataSource.data(gridData);
+                     breadcrumbs.length = 0;
+                     hideupButton()
+                     hideButton();
 
 
 
-                                     var clickedFolder;
-                                    function sshandleBreadcrumbClickss(event) {
-                                       const clickedIndex = event.target.getAttribute('data-index');
-                                       const clickedId = event.target.getAttribute('data-id'); 
-                                       console.log('Clicked ID:', clickedId);
-                                         clickedFolder = breadcrumbs[clickedIndex];
-                                         
-                                         if(clickedFolder == 'Home')
-                                        {
-                                            
-                                           Homes();
-                                            
-                                           
-                                        }
-                                        else
-                                        {
-                                        
-                                        
-                                            const vallevelArray = vallevel.split(',');
-        
-        
-        if (clickedId >= 1 && clickedId <= vallevelArray.length) {
-            
-            vallevelArray.splice(clickedId);
-            
-          
-            vallevel = vallevelArray.join(',');
-        }
+                   }
 
-                                            
-                                           navigateToSubfolder(clickedFolder,null);
-                                        //uploadlogic(clickedFolder)
-                                        }
-                                    }
-        
-                                    function Homes()
-                                    {
-                                        //clickedFolder = null;
-                                        breadcrumbs.length = 0;
-                                        vallevel = null;
-                                        breadcrumbsContainer.innerHTML = `<span class="breadcrumb-item active-breadcrumb" data-index="0"><i class="fas fa-home" style="color:#00A0AD;margin-left: 11px;"></i></span>`;
-                                        var fileManager = $("#filemanager").data("kendoFileManager");
-                                        fileManager.refresh();
-                                        fileManager.dataSource.data(gridData);
-                                        breadcrumbs.length = 0;
-                                        hideupButton()
-                                        hideButton();
-        
-                                    
-        
-                                    }
-        
-                                    ///////////////
-                                      
-                                    function updateBreadcrumbs(folderName) {
-                                        //console.log("folderName",folderName)
-                                        breadcrumbs.length = 0;
-                                        
-                                        
-                                        findParentFolders(output, folderName);
-                                        //breadcrumbs.unshift("Home");
-        
-        
-                                        // breadcrumbsContainer.innerHTML = breadcrumbs.map((crumb, index) => {
-                                        //     const isActive = index === breadcrumbs.length - 1;
-                                        //     const activeClass = isActive ? 'active-breadcrumb' : '';
-                                        //     return `<span class="breadcrumb-item ${activeClass}" data-index="${index}">${crumb}</span>${separator}`;
-                                        // }).join('');
-                                        // const breadcrumbItems = breadcrumbsContainer.querySelectorAll('.breadcrumb-item');
-                                        // breadcrumbItems.forEach(item => {
-                                        //     item.addEventListener('click', handleBreadcrumbClick);
-                                        // });
-        
-                                       // console.log("breadcrumbs", breadcrumbs)
-                                        vallevel = null;
-                                        for (let i = 0; i < breadcrumbs.length; i++) {
-                                            //showLoader();
-                                            const breadcrumbValue = breadcrumbs[i];
-                                            var vpf = breadcrumbs[1];
-                                            if (i > 0) {
-                                                vallevel = vallevel + "," + breadcrumbValue;
-                                                vallevel= vallevel.split(',').filter(item => item !== 'null').join(',');
-                                                navigateToSubfolder(breadcrumbValue, vpf);
+                  
+                   var breadcrumbValue ;
+                   function updateBreadcrumbs(folderName) {
+                    
+                     //console.log("folderName",folderName)
+                     breadcrumbs.length = 0;
+                     
+                     findParentFolders(output, folderName);
+                     //console.log(breadcrumbs)
+                     vallevel = null;
+                     for (let i = 0; i < breadcrumbs.length; i++) {
+                       //showLoader();
+                        breadcrumbValue = breadcrumbs[i];
+                       
+                       var vpf = breadcrumbs[0];
+                    //    if (i > 0) {
+                         vallevel = vallevel + "," + breadcrumbValue;
+                         vallevel = vallevel.split(',').filter(item => item !== 'null').join(',');
+                          //console.log(allid1)
+                        
+                      // }
+
+
+                      
+
+
+                     }
+                     console.log("test");
+                     navigateToSubfolder(breadcrumbValue, vpf,allid1);
+                     
+                     
+
+                   }
+
+                   // console.log("breadcrumbs" ,breadcrumbs)
+
+                   function findParentFolders(node, targetId) {
+                    
+                     for (const key in node) {
+                       if (node.hasOwnProperty(key) && typeof node[key] === 'object') {
+                         if (node[key].id === targetId) {
+                           breadcrumbs.unshift(key);
+                           return true;
+                         }
+                         if (findParentFolders(node[key], targetId)) {
+                           breadcrumbs.unshift(key);
+                           return true;
+                         }
+                       }
+                     }
+                     return false;
+                   }
+
+
+
+                  
+                   $("#filemanager").on("click", ".folder-link", ".foldertype-link", function () {
+                     var folderName = $(this).find(".folder-name").text();
+                     var folids = $(this).find(".folder-name").attr("id");
+                     var foldertypeId = $(this).closest('tr').find(".foldertype-link .folder-type").attr("id");
+                     //var isData = $(this).closest('tr').find(".foldertype-link .folder-type").attr("data-id");
+                     //console.log(idData)
+                       if(foldertypeId == null || foldertypeId == "")
+                     {
+                        vallevel = vallevel + "," + folderName;
+                     vallevel = vallevel.split(',').filter(item => item !== 'null').join(',');
+                        navigateToSubfolder(folderName, null, folids);
+                        
+                        
+                    }
+                     else
+                     {
+                     
+                      
+                      openfiles(folids)
+                      
+                     }
+
+
+                   });
+
+
+                   var prjj;
+                   var tt;
+
+                   
+                   function openfiles(folids)
+                   {
+                    var config = {
+                                 appName: "pmis-lite",
+                                 reportName: "New_Upload_Report_Widgets",
+                               };
+
+                               ZOHO.CREATOR.API.getRecordCount(config)
+                                 .then(function (response) {
+                                   var rescount = parseInt(response.result.records_count)
+                                   var pageSize = 200;
+                                   var totalPages = Math.ceil(rescount / pageSize);
+
+
+                                   for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                                     var widgetfilesdatasss = {
+                                       reportName: "New_Upload_Report_Widgets",
+                                       criteria: "ID!=0",
+                                       page: pageNumber,
+                                       pageSize: pageSize,
+                                     };
+                                     ZOHO.CREATOR.API.getAllRecords(widgetfilesdatasss).then(function (widgetfiles) {
+
+                                           var widgetfilesdata = widgetfiles.data;
+                                          //console.log(widgetfilesdata)
+                                          for (let i = 0; i < widgetfilesdata.length; i++) {
+                                            var folderfileids=  widgetfilesdata[i]["ID"];
+                                            //console.log(folids)
+                                            if(folderfileids == folids )
+                                            {
+                                                var Documentuploadid = widgetfilesdata[i]["Document_Management_History.Document_Upload1"];
+                                                var fileprojectid = widgetfilesdata[i]["Project"]["ID"];
+                                               var fileparentid = widgetfilesdata[i]["Folder"]["ID"];
+                                               
+                                               var filesopens = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#Page:Document_Upload_View_Mode?Reportname=New_Upload_Report&NewuploadParm=EditScreen";
+                                               filesopens += "&PMNum=" + encodeURIComponent(Documentuploadid);
+                                               filesopens += "&Project_ID=" + encodeURIComponent(fileprojectid);
+                                               filesopens += "&parent_id=" + encodeURIComponent(fileparentid);
+                                               window.open(filesopens, "_parent");
+                                               
+
                                             }
                                             
-                                           
                                             
-                                            
-        
-                                        }
+                                          }
+
+                                     });
+                                    }
+                                  });
+                   }
+
+
+
+                   
+
+                   function navigateToSubfolder(folderName, vpf, folids) {
+                    //console.log("test1")
+                    
+                     showLoader();
+                     
+                     showButton();
+                     hideupButton();
+                     var juju = vpf;
+
+
+                     var config = {
+                       appName: "pmis-lite",
+                       reportName: "Folder_Permission_Sf_Report",
+                     };
+
+                     ZOHO.CREATOR.API.getRecordCount(config)
+                       .then(function (response) {
+                         var rescount1 = parseInt(response.result.records_count)
+                         var pageSizee = 200;
+                         var totalPagess = Math.ceil(rescount1 / pageSizee);
+                          
+
+                         for (var pageNumbers = 1; pageNumbers <= totalPagess; pageNumbers++) {
+                           var fpreport = {
+                             reportName: "Folder_Permission_Sf_Report",
+                             criteria: "(Folder_Creation_Mapping == "+folids+")",
+                             page: pageNumbers,
+                             pageSize: pageSizee,
+                           };
+                           ZOHO.CREATOR.API.getAllRecords(fpreport).then(function (response) {
+                             var folderpermission = response.data;
+                              
+                             var subfolderResponse = fcmd
+
+                             if (subfolderResponse != null) {
+
+                               var subfolderFcmd = subfolderResponse;
+                               var subfolderGridData = [];
+                               //console.log("subfolderFcmd",subfolderFcmd)
+
+                               for (var i = 0; i < subfolderFcmd.length; i++) {
+ 
+                                 var subproject = subfolderFcmd[i]["Project"]["display_value"];
+                                 var parentFolder = subfolderFcmd[i]["Parent_Folder"]["display_value"];
+                                 var cfolder = subfolderFcmd[i]["ID"];
+                                 var level = subfolderFcmd[i]["Level"];
+                                 var folo = subfolderFcmd[i]["Folder_Path.Folder"];
+                                 
+                                 level = parseInt(level, 10);
+                                 
+                                 if (juju != null) {
+                                   prjj = juju
+                                   
+                                 } else {
+                                   if (parentFolder == folderName) {
+                                     if (!prjj) {
+                                       prjj = folderName;
+                                     }
+                                   }
+                                  
+                                 }
+
+
+
+                                 if (parentFolder == folderName && prjj == subproject && folo == vallevel) {
+                                  var levelcal = subfolderFcmd[i]["Level"];
+                                  levelcal = parseInt(levelcal, 10);
+                                  //console.log(levelcal)
+
+
+                                   var initparams = ZOHO.CREATOR.UTIL.getInitParams();
+                                   for (let j = 0; j < usercreation.length; j++) {
+                                     var uemail = usercreation[j]["E_Mail"];
+                                     if (initparams.loginUser == uemail) {
+                                       var usrname = usercreation[j]["Name"];
+                                       for (let k = 0; k < groupmaster.length; k++) {
+                                         var grpname = [];
+                                         var gname = groupmaster[k]["User_Name"];
+                                         for (var l = 0; l < gname.length; l++) {
+                                           var ggname = gname[l]["display_value"];
+                                           grpname.push(ggname);
+                                         }
+                                         for (var m = 0; m < grpname.length; m++) {
+                                           var ginx = grpname[m];
+                                           if (ginx == usrname) {
+                                             var gnames = groupmaster[k]["Group_Name"];
+                                             var fcmgn = fcmd[i]["Group_Name"];
+                                             //console.log(fcmgn);
+                                             let fcrtmap = [];
+                                             for (var n = 0; n < fcmgn.length; n++) {
+                                               var ffccmm = fcmgn[n]["display_value"];
+                                               fcrtmap.push(ffccmm);
+                                             }
+                                             for (var o = 0; o < fcrtmap.length; o++) {
+                                               var fcmgroup = fcrtmap[o];
+                                               if (fcmgroup == gnames) {
+                                                 subfolderGridData.push({
+                                                   type: '<i class="fa fa-folder" style="font-size:16px;color:#F3D434"></i>',
+                                                   name: subfolderFcmd[i]["Folder"],
+                                                   status: "",
+                                                   createdby: subfolderFcmd[i]["Created_By"],
+                                                   createddt: subfolderFcmd[i]["Created_D_T"],
+                                                   id: subfolderFcmd[i]["ID"],
+                                                   action: '<a href="javascript:void(0);" class="childedit-icon" data-index="' + subfolderFcmd[i]["ID"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
+                                                 });
+                                                 
+                                               }
+                                               
+                                             }
+                                           }
+                                         }
+                                       }
+                                     }
+                                   }
+                                   
+                                  
+
+                                 }
+
+                                //  Folder_Path1 = subfolderFcmd[i]["Folder_Path.Parent_Folder"];
+                                //  if (Folder_Path1.startsWith(",")) {
+                                //    Folder_Path1 = Folder_Path1.substring(1);
+                                //  }
+                                 //console.log("Folder_Path1 from here",Folder_Path1)
+                                // Folder_Path1 += "," + folderName;
+                                 ///////////////////folderpermission////////////////////////////////////
+                                 if (cfolder == folids && prjj == subproject) {
+                                   //console.log("click", subfolderFcmd[i]["Folder"])
+                                   Folder_Path1 = subfolderFcmd[i]["Folder_Path.Folder"];
+                                   fcmid = subfolderFcmd[i]["ID"];
+                                   Project_ID = subfolderFcmd[i]["Project"]["ID"];
+                                   Folder1 = subfolderFcmd[i]["ID"];
+                                  
+                                   var levelss = subfolderFcmd[i]["Level"];
+                                   if (levelss == "1" || levelss == "2") {
+                                     hideupButton();
+                                   } else {
+                                     showupButton();
+                                   }
+
+
+
+                                   parent_id = subfolderFcmd[i]["ID"];
+                                   Sub_Folder = subfolderFcmd[i]["ID"];
+                                   Document_Upload = subfolderFcmd[i]["ID"];
+
+
+                                   for (let j = 0; j < folderpermission.length; j++) {
+                                     var folderperm = folderpermission[j]["Folder_permission"];
+                                     var foledermapping = folderpermission[j]["Folder_Creation_Mapping"]["ID"];
+                                     var groupname = folderpermission[j]["Group_Name.Group_Name"]
+                                     if (foledermapping == fcmid) {
                                        
-                                        
-                                    }
-                                    
-                                    // console.log("breadcrumbs" ,breadcrumbs)
-        
-                                    function findParentFolders(node, targetId) {
-                                        for (const key in node) {
-                                            if (node.hasOwnProperty(key) && typeof node[key] === 'object') {
-                                                if (node[key].id === targetId) {
-                                                    breadcrumbs.unshift(key);
-                                                    return true;
-                                                }
-                                                if (findParentFolders(node[key], targetId)) {
-                                                    breadcrumbs.unshift(key);
-                                                    return true;
-                                                }
-                                            }
-                                        }
-                                        return false;
-                                    }
-        
-        
-        
-                                    // function handleBreadcrumbClick(event) {
-                                    //     const clickedIndex = event.target.getAttribute('data-index');
-                                    //     const clickedFolder = breadcrumbs[clickedIndex];
-                                    //     navigateToSubfolder(clickedFolder);
-                                    //     uploadlogic(clickedFolder)
-                                    // }
-                                    
-                                    $("#filemanager").on("click", ".folder-link", function () {
-                                        var folderName = $(this).find(".folder-name").text();
-                                        var folids = $(this).find(".folder-name").attr("id");
-                                         //console.log(folids)
-                                         vallevel = vallevel+","+folderName;
-                                         vallevel =vallevel.split(',').filter(item => item !== 'null').join(',');
+                                       //groupmasterloop////
+                                       if (folderperm == "true") {
+                                         // console.log("inside")
+                                         for (let k = 0; k < groupmaster.length; k++) {
+                                           var gpname = groupmaster[k]["Group_Name"];
+                                           // console.log(groupmaster)
+                                           var username = [];
 
-                                        navigateToSubfolder(folderName,null,folids);
-                                        if(clickedFolder == "Home")
-                                        {
-                                            clickedFolder = null;
-                                           
-                                           breadcrumbs = ["Home"];
-                                            navigateToSubfolder(folderName,folderName);
-                                        }
-        
-                                    });
-        
-        
-                                    var prjj;
-                                    var tt;
-                                    
-                                    // function uploadlogic(folderName) {
-                                    //     //console.log("upload logic in upload",folderName)
-                                    //     //////upload logic////
-                                    //     var uploadreport = widgetAdminResponse.data;
-                                    //     //console.log(uploadreport);
-                                    //     for (let i = 0; i < uploadreport.length; i++) {
-                                    //         var widgetAdminProject = uploadreport[i]["Project"]["display_value"];
-                                    //         var parentFolderValu = uploadreport[i]["Folder_Path.Folder"];
-                                    //         var part = parentFolderValu.split(",");
-                                    //         var comp = part[part.length - 1].trim();
-                                    //         //console.log(parentFolderValu);
-                                    //         // if (widgetAdminProject == folderName) {
-                                    //         //     if (!tt) {
-                                    //         //         tt = folderName;
-                                    //         //     }
-                                    //         // }
-                                    //         if (widgetAdminProject == prjj) {
-                                    //             //console.log(comp)
-                                    //             // if (comp === folderName) {
-                                    //             // console.log(comp)
-                                    //             // parent_id = uploadreport[i]["Folder"]["display_value"];
-                                    //             // Document_Upload = uploadreport[i]["Folder"]["display_value"];
-                                    //             // Sub_Folder = uploadreport[i]["Folder"]["display_value"];
-                                    //             Folder_Path1 = uploadreport[i]["Folder_Path.Parent_Folder"];
-                                    //             if (Folder_Path1.startsWith(",")) {
-                                    //                 Folder_Path1 = Folder_Path1.substring(1);
-                                    //             }
-                                    //             //console.log (parent_id);
-                                    //             // } else if(comp != folderName){
-                                    //             // Folder_Path1 = uploadreport[i]["Folder_Path.Parent_Folder"];
-                                    //             // if (Folder_Path1.startsWith(",")) {
-                                    //             //     Folder_Path1 = Folder_Path1.substring(1);
-                                    //             // }
-                                    //             // parent_id = upprojectid;
-                                    //             // Document_Upload = upprojectid;
-                                    //             // Sub_Folder=upprojectid;
-        
-                                    //             // }
-                                    //             // else
-                                    //             // {
-                                    //             // parent_id = null;
-                                    //             // Document_Upload = null;
-                                    //             // Sub_Folder = null;
-                                    //             // Project_ID = null;
-                                    //             // Folder1 = null;
-                                    //             // Folder_Path1 = null;
-                                    //             // }
-                                    //         }
-                                    //     }
-                                    // }
-                                    
-                                    function navigateToSubfolder(folderName, vpf,folids) {
-                                        
-                                        //countings = countings+1;
-                                        //console.log(vallevel)
-                                      
-                                        
 
-                                        
-                                        showLoader();
-                                        // if(clickedFolder != 'Home')
-                                        // {
-                                            
-                                        showButton();
-                                        hideupButton();
-                                        var juju = vpf;
 
-                                        // var config = {
-                                        //     appName: "ern-pmis",
-                                        //     reportName: "Folder_Creation_Mapping_Widgets",
-                                        // };
-        
-                                        // ZOHO.CREATOR.API.getRecordCount(config)
-                                        //     .then(function (response) {
-                                        //         var rescount = parseInt(response.result.records_count)
-                                        //         var pageSize = 200;
-                                        //         var totalPages = Math.ceil(rescount / pageSize);
-                                                
-        
-                                        //         for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                                           if (groupname == gpname) {
 
-                                        // var subfolderDatas = {
-                                        //     reportName: "Folder_Creation_Mapping_Widgets",
-                                        //     criteria: "ID!=0" || "ID==0",
-                                        //     fields: "ID,Folder,Parent_Folder,Status,Created_By,Created_D_T,Project",
-                                        //     page: pageNumber,
-                                        //     pageSize: pageSize,
-                                        // };
+                                             var uname = groupmaster[k]["User_Name"];
+                                             for (var l = 0; l < uname.length; l++) {
+                                               var usname = uname[l]["display_value"];
+                                               username.push(usname);
+                                             }
+                                             
+                                             ///usercreation////
+                                             for (let m = 0; m < usercreation.length; m++) {
+                                               var ucname = usercreation[m]["Name"];
+                                               for (let n = 0; n < username.length; n++) {
+                                                 var uindex = username[n];
+                                                 //console.log("itsn",uindex)
+                                                 if (uindex == ucname) {
+                                                   var email = usercreation[m]["E_Mail"];
+                                                   //console.log("sucess",email)
+                                                   var initparams = ZOHO.CREATOR.UTIL.getInitParams();
+                                                   //console.log(initparams)
+                                                   if (initparams.loginUser == email) {
 
-                                        // ZOHO.CREATOR.API.getAllRecords(subfolderDatas).then(function (subfolderResponse) {
-                                        
-                                            var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Folder_Permission_Sf_Report",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount1 = parseInt(response.result.records_count)
-                                                var pageSizee = 200;
-                                                var totalPagess = Math.ceil(rescount1 / pageSizee);
-                                                
-        
-                                                for (var pageNumbers = 1; pageNumbers <= totalPagess; pageNumbers++) {   
-												                var fpreport = {
-                    reportName: "Folder_Permission_Sf_Report",
-                    criteria: "ID!=0" || "ID==0",
-                    page: pageNumbers,
-                    pageSize: pageSizee,
-                };
-                ZOHO.CREATOR.API.getAllRecords(fpreport).then(function (response) {
-                    var folderpermission = response.data;
-        
-                                                  var subfolderResponse = fcmd
-                                                  
-                                            if (subfolderResponse != null) {
-        
-                                                var subfolderFcmd = subfolderResponse;
-                                                var subfolderGridData = [];
-                                               //console.log("subfolderFcmd",subfolderFcmd)
-                                              
-                                                for (var i = 0; i < subfolderFcmd.length; i++) {
+                                                     var folderPathArray = subfolderFcmd[i]["Folder_Path"];
+                                                     //console.log(folderPathArray)
+                                                     Folder_Path = [];
+                                                     for (var o = 0; o < folderPathArray.length; o++) {
+                                                       var folderPathId = folderPathArray[o]["ID"];
+                                                       Folder_Path.push(folderPathId);
+
+                                                     }
+
+                                                     Project = subfolderFcmd[i]["Project"]["ID"];
+                                                     Parent_Folder = subfolderFcmd[i]["ID"];
+                                                     Folder_Path.push(Parent_Folder);
+                                                     Group_Name=[]
+                                                     var gnm = subfolderFcmd[i]["Group_Name"];
+                                                     for (var z = 0; z < gnm.length; z++) {
+                                                       var gngn = gnm[z]["ID"];
+                                                       Group_Name.push(gngn);
+
+                                                       
+                                                     }
+
                                                     
-                                                    var subproject = subfolderFcmd[i]["Project"]["display_value"];
-                                                    var parentFolder = subfolderFcmd[i]["Parent_Folder"]["display_value"];
-                                                    var cfolder = subfolderFcmd[i]["ID"];
-                                                    var level = subfolderFcmd[i]["Level"];
-                                                    var folo = subfolderFcmd[i]["Folder_Path.Folder"];
-                                                    //console.log(folo)
-                                                    level = parseInt(level, 10);
-                                                    // console.log("Parentfolder",parentFolder)
-                                                    //var prjj;
-                                                    // var tt;
-                                                    if (juju != null) {
-                                                        prjj = juju
-                                                        //console.log("on if")
-                                                    }
-                                                    else {
-                                                        if (parentFolder == folderName) {
-                                                            if (!prjj) {
-                                                                prjj = folderName;
-                                                            }
-                                                        }
-                                                        //console.log("on else")
-                                                    }
-                                                      
-                                                   
-                                                    // if ((parentFolder == folderName && prjj == subproject) || (parentFolder == folderName && juju == subproject)) {
-                                                        
-                                                        if (parentFolder == folderName && prjj == subproject && folo == vallevel ) {
-                                                            //console.log("countings",countings , " ","level",level)
-                                                            
-                                                        // console.log(folderName)  
-                                                        
-                                                        //console.log(countings,level)
 
-                                                        
-                                                        var initparams = ZOHO.CREATOR.UTIL.getInitParams();
-                                                        for (let j = 0; j < usercreation.length; j++) {
-                                                            var uemail = usercreation[j]["E_Mail"];
-                                                            if (initparams.loginUser == uemail) {
-                                                                var usrname = usercreation[j]["Name"];
-                                                                for (let k = 0; k < groupmaster.length; k++) {
-                                                                    var grpname = [];
-                                                                    var gname = groupmaster[k]["User_Name"];
-                                                                    for (var l = 0; l < gname.length; l++) {
-                                                                        var ggname = gname[l]["display_value"];
-                                                                        grpname.push(ggname);
-                                                                    }
-                                                                    for (var m = 0; m < grpname.length; m++) {
-                                                                        var ginx = grpname[m];
-                                                                        if (ginx == usrname) {
-                                                                            var gnames = groupmaster[k]["Group_Name"];
-                                                                            var fcmgn = fcmd[i]["Group_Name"];
-                                                                            //console.log(fcmgn);
-                                                                            let fcrtmap = [];
-                                                                            for (var n = 0; n < fcmgn.length; n++) {
-                                                                                var ffccmm = fcmgn[n]["display_value"];
-                                                                                fcrtmap.push(ffccmm);
-                                                                            }
-                                                                            for (var o = 0; o < fcrtmap.length; o++) {
-                                                                                var fcmgroup = fcrtmap[o];
-                                                                                if (fcmgroup == gnames) {
-                                                                                    subfolderGridData.push({
-                                                                                        type: '<i class="fa fa-folder" style="font-size:16px;color:#F3D434"></i>',
-                                                                                        name: subfolderFcmd[i]["Folder"],
-                                                                                        status: "",
-                                                                                        createdby: subfolderFcmd[i]["Created_By"],
-                                                                                        createddt: subfolderFcmd[i]["Created_D_T"],
-                                                                                        id:subfolderFcmd[i]["ID"],
-                                                                                        action: '<a href="javascript:void(0);" class="childedit-icon" data-index="' + subfolderFcmd[i]["ID"] + '"><i class="fas fa-edit" style="font-size:15px;color:red"></i></a>'
-                                                                                    });
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    
-                                                }
-        
-                                                    Folder_Path1 = subfolderFcmd[i]["Folder_Path.Parent_Folder"];
-                                                if (Folder_Path1.startsWith(",")) {
-                                                    Folder_Path1 = Folder_Path1.substring(1);
-                                                }
-                                                //console.log("Folder_Path1 from here",Folder_Path1)
-                                                Folder_Path1 += ","+folderName;
-                                                    ///////////////////folderpermission////////////////////////////////////
-                                                    if (cfolder == folids && prjj == subproject ) {
-                                                     //console.log("click", subfolderFcmd[i]["Folder"])
-                                                        
-                                                        fcmid = subfolderFcmd[i]["ID"];
-                                                        Project_ID = subfolderFcmd[i]["Project"]["ID"];
-                                                        Folder1 = subfolderFcmd[i]["ID"];
-                                                        
-                                                        var levelss = subfolderFcmd[i]["Level"];
-                                                        if (levelss == "1" || levelss == "2") {
-                                                            hideupButton();
-                                                        }
-                                                        else {
-                                                            showupButton();
-                                                        }
+                                                   }
+                                                 }
+                                               }
+                                             }
+                                           }
+                                         }
+                                       } else {
+                                         Project = null;
+                                         Parent_Folder = null;
+                                         Folder_Path = null;
+                                         Group_Name = null;
+                                         //console.log("im at else")
+                                       }
+                                     }
 
-                                                        
-        
-                                                        parent_id = subfolderFcmd[i]["ID"];
-                                                        Sub_Folder = subfolderFcmd[i]["ID"];
-                                                        Document_Upload = subfolderFcmd[i]["ID"];
-                                                        
+                                   }
+                                  
+
+
+                                 }
+
+
+
+                               }
+                               //console.log("folids",folids)
+                                
+                               showLoader();
+                               var config = {
+                                 appName: "pmis-lite",
+                                 reportName: "New_Upload_Report_Widgets",
+                               };
+
+                               ZOHO.CREATOR.API.getRecordCount(config)
+                                 .then(function (response) {
+                                   var rescount = parseInt(response.result.records_count)
+                                   var pageSize = 200;
+                                   var totalPages = Math.ceil(rescount / pageSize);
+
                                      
-                                                        for (let j = 0; j < folderpermission.length; j++) {
-                                                            var folderperm = folderpermission[j]["Folder_permission"];
-                                                            var foledermapping = folderpermission[j]["Folder_Creation_Mapping"]["ID"];
-                                                            var groupname = folderpermission[j]["Group_Name.Group_Name"]
-                                                            if (foledermapping == fcmid) {
-                                                                //if(folderperm == "true"){
-                                                                // console.log("eeee",foledermapping,fcmid)
-                                                                // console.log("current folder",cfolder)
-                                                                //groupmasterloop////
-                                                                if (folderperm == "true") {
-                                                                    // console.log("inside")
-                                                                    for (let k = 0; k < groupmaster.length; k++) {
-                                                                        var gpname = groupmaster[k]["Group_Name"];
-                                                                       // console.log(groupmaster)
-                                                                        var username = [];
-                                                                        
-                                                                            
-                                                                                           
-                                                                        if (groupname == gpname) {
-                                                                          
-                                                                            var uname = groupmaster[k]["User_Name"];
-                                                                            for (var l = 0; l < uname.length; l++) {
-                                                                                var usname = uname[l]["display_value"];
-                                                                                username.push(usname);
-                                                                            }
-                                                                            //console.log(username);
-                                                                            ///usercreation////
-                                                                            for (let m = 0; m < usercreation.length; m++) {
-                                                                                var ucname = usercreation[m]["Name"];
-                                                                                for (let n = 0; n < username.length; n++) {
-                                                                                    var uindex = username[n];
-                                                                                    //console.log("itsn",uindex)
-                                                                                    if (uindex == ucname) {
-                                                                                        var email = usercreation[m]["E_Mail"];
-                                                                                        //console.log("sucess",email)
-                                                                                        var initparams = ZOHO.CREATOR.UTIL.getInitParams();
-                                                                                        //console.log(initparams)
-                                                                                        if (initparams.loginUser == email) {
-                                                                                            
-                                                                                            var folderPathArray = subfolderFcmd[i]["Folder_Path"];
-                                                                                            //console.log(folderPathArray)
-                                                                                            Folder_Path = [];
-                                                                                            for (var o = 0; o < folderPathArray.length; o++) {
-                                                                                                var folderPathId = folderPathArray[o]["ID"];
-                                                                                                Folder_Path.push(folderPathId);
-                                                                                                
-                                                                                            }
-                                                                                            
-                                                                                            Project = subfolderFcmd[i]["Project"]["ID"];
-                                                                                            Parent_Folder = subfolderFcmd[i]["ID"];
-                                                                                            Folder_Path.push(Parent_Folder);
-                                                                                           // Group_Name = [];
-                                                                                        //    if(prjj == subproject){
-                                                                                            var gnm = subfolderFcmd[i]["Group_Name"]; 
-                                                                                               for (var z = 0; z < gnm.length; z++) {
-                                                                                                    var gngn = gnm[z]["ID"];
-                                                                                                    Group_Name.push(gngn);
-                                                                                
-                                                                                                     // }
-                                                                                                    }
-                                                                                                    
-                                                                                            //console.log("im final broo",Folder_Path)
-                                                                                                
-                                                                                    }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                } else {
-                                                                    Project = null;
-                                                                    Parent_Folder = null;
-                                                                    Folder_Path = null;
-                                                                    Group_Name = null;
-                                                                    //console.log("im at else")
-                                                                }
-                                                            }
-                                                       
-                                                        }
-                                            //         });
-                                            //         }
-                                                
-                                            // });
+                                   for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                                     var widgetAdminDatas = {
+                                       reportName: "New_Upload_Report_Widgets",
+                                       criteria: "(Folder == "+folids+")",
+                                       page: pageNumber,
+                                       pageSize: pageSize,
+                                     };
+                                     console.log(widgetAdminDatas);
+                                     ZOHO.CREATOR.API.getAllRecords(widgetAdminDatas).then(function (widgetAdminResponse) {
+ 
+                                       if (widgetAdminResponse.code === 3000) {
+                                        
+                                         //showupButton();
+                                         var widgetAdminData = widgetAdminResponse.data;
+                                        //console.log(widgetAdminData)
+                                         for (var z = 0; z < widgetAdminData.length; z++) {
+                                                          
+                                           var widgetAdminProject = widgetAdminData[z]["Project"]["display_value"];
+                                           var currentlevel = widgetAdminData[z]["Folder.Level"];
+                                           var filo = widgetAdminData[z]["Folder_Path.Folder"];
+                                           currentlevel = parseInt(currentlevel, 10);
+                                           var fileids = widgetAdminData[z]["Folder"]["display_value"];
+                                        
+                                            
+                                           
 
+                                           if (widgetAdminProject === prjj) {
+                                            
+                                             if (fileids == folids) {
+                                              
+                                              
+                                         
+                                               var ft = widgetAdminData[z]["Document_Upload"];
+                                               let filetype = [];
+                                               for (var n = 0; n < ft.length; n++) {
+                                                 var fty = ft[n]["display_value"];
+                                                 filetype.push(fty);
+                                                 // console.log(filetype)
+                                               }
+                                               let filetypes = filetype[0].split(' / ')[1].trim();
+                                               //console.log(filetypes)
+                                               if (filetypes == "xlsx" || filetypes == "xls") {
+                                                 var icons = '<i class="fa fa-file-excel-o" style="font-size:16px;color:green"></i>';
+                                               } else if (filetypes == "png" || filetypes == "jpg" || filetypes == "jpeg" || filetypes == "hec") {
+                                                 var icons = '<i class="fa fa-file-image-o" style="font-size:16px;color:#3A729B"></i>';
+                                               } else if (filetypes == "pdf") {
+                                                 var icons = '<i class="fa fa-file-pdf-o" style="font-size:16px;color:red"></i>';
+                                               } else if (filetypes == "doc" || filetypes == "word" || filetypes == "docx") {
+                                                 var icons = '<i class="fa fa-file-word-o" style="font-size:16px;color:blue"></i>';
+                                               } else if (filetypes == "txt" || filetypes == "text") {
+                                                 var icons = '<i class="fa fa-file-text-o" style="font-size:16px"></i>';
+                                               } else {
+                                                 var icons = '<i class="fa fa-file" style="font-size:16px"></i>';
+                                                 
+                                               }
 
-                                                    }
-        
-        
-        
-                                                }
-                                            var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "New_Upload_Report",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
-                                                
-        
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                                var widgetAdminDatas = {
-                                reportName: "New_Upload_Report",
-                                criteria: "ID!=0",
-                                fields: "ID,Document_Title,Status,Created_By,Created_D_T,Project",
-                                page: pageNumber,
-                                pageSize: pageSize,
-                            };
-                            ZOHO.CREATOR.API.getAllRecords(widgetAdminDatas).then(function (widgetAdminResponse) {
-                                                
-                                                if (widgetAdminResponse.code === 3000 ) {
-                                                    //showupButton();
-                                                    var widgetAdminData = widgetAdminResponse.data;
-                                                 // console.log(widgetAdminData)
-                                                   
-                                                    for (var z = 0; z < widgetAdminData.length; z++) {
-                                                       
-
-                                                        // var vallevelArray = vallevel.split(','); 
-                                                        // var vallevelcount = vallevelArray.length;
-                                                        var widgetAdminProject = widgetAdminData[z]["Project"]["display_value"];
-                                                        var parentFolderValue = widgetAdminData[z]["Folder_Path.Folder"];
-                                                        var currentlevel = widgetAdminData[z]["Folder.Level"];
-                                                        var filo = widgetAdminData[z]["Folder_Path.Folder"];
-                                                        currentlevel = parseInt(currentlevel, 10);
-                                                        
-                                                        var parts = parentFolderValue.split(",");
-                                                        var lastPartAfterLastComma = parts[parts.length - 1].trim();
-                                                        //        if(widgetAdminProject == folderName){
-                                                        //     if (!tt) {
-                                                        //        tt = folderName; 
-                                                        //     }
-                                                        //  }
-                                                        //if ((widgetAdminProject === tt) || (widgetAdminProject === juju)) {
-                                                        if (widgetAdminProject === prjj) {
-                                                           // console.log("parentFolderValue",parentFolderValue)
-                                                            //console.log("comapring:",lastPartAfterLastComma, "",folderName)
-                                                            if (lastPartAfterLastComma == folderName && vallevel == filo) {
-                                                               // console.log("im inside Mamee" )
-                                                               //console.log(currentlevel , countings)
-                                                                var ft = widgetAdminData[z]["Document_Upload"];
-                                                                let filetype = [];
-                                                                for (var n = 0; n < ft.length; n++) {
-                                                                    var fty = ft[n]["display_value"];
-                                                                    filetype.push(fty);
-                                                                   // console.log(filetype)
-                                                                }
-                                                                let filetypes = filetype[0].split(' / ')[1].trim();
-                                                                //console.log(filetypes)
-                                                                if (filetypes == "xlsx" || filetypes == "xls") {
-                                                                    var icons = '<i class="fa fa-file-excel-o" style="font-size:16px;color:green"></i>';
-                                                                }
-                                                                else if (filetypes == "png" || filetypes == "jpg" || filetypes == "jpeg" || filetypes == "hec") {
-                                                                    var icons = '<i class="fa fa-file-image-o" style="font-size:16px;color:#3A729B"></i>';
-                                                                }
-                                                                else if (filetypes == "pdf") {
-                                                                    var icons = '<i class="fa fa-file-pdf-o" style="font-size:16px;color:red"></i>';
-                                                                }
-                                                                else if (filetypes == "doc" || filetypes == "word" || filetypes == "docx") {
-                                                                    var icons = '<i class="fa fa-file-word-o" style="font-size:16px;color:blue"></i>';
-                                                                }
-                                                                else if (filetypes == "txt" || filetypes == "text") {
-                                                                    var icons = '<i class="fa fa-file-text-o" style="font-size:16px"></i>';
-                                                                }
-                                                                else {
-                                                                    var icons = '<i class="fa fa-file" style="font-size:16px"></i>';
-                                                                }
-                                                                
-                                                                subfolderGridData.push({
-    type: icons,
-    name: widgetAdminData[z]["Document_Title"],
-    status: widgetAdminData[z]["Status"]["display_value"],
-    createdby: widgetAdminData[z]["Created_By"],
-    createddt: widgetAdminData[z]["Created_D_T"],
-    id:widgetAdminData[z]["ID"],
-    action: `
+                                               subfolderGridData.push({
+                                                 type: icons,
+                                                 name: widgetAdminData[z]["Document_Title"],
+                                                 status: widgetAdminData[z]["Status"]["display_value"],
+                                                 createdby: widgetAdminData[z]["Created_By"],
+                                                 createddt: widgetAdminData[z]["Created_D_T"],
+                                                 id: widgetAdminData[z]["ID"],
+                                                 action: `
         <span class="iconsss" onclick="togglePopupMenu(this)">☰</span>
         <div id="popupMenu" class="popup-menu">
-            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;"> <span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Download</span> </i></a>
-            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Logs </span></i></a>
-            <a href="javascript:void(0);" class "comments-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;CR Sheet </span></i></a>
-            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["Document_Title"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Revision History </span></i></a>
+            <a href="javascript:void(0);" class="download-icon" data-index="${widgetAdminData[z]["ID"]}"><i class="fa fa-download" style="font-size:13px;color:#29a3a3;"> <span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Download</span> </i></a>
+            <a href="javascript:void(0);" class="reference-icon" data-index="${widgetAdminData[z]["ID"]}"><i class="fas fa-paperclip" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Reference Documents</span></i></a>
+            <a href="javascript:void(0);" class="crs-icon" data-index="${widgetAdminData[z]["ID"]}"><i class="fas fa-comments" style="font-size:13px;color:#00A0AD;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;CR Sheet </span></i></a>
+            <a href="javascript:void(0);" class="info-icon" data-index="${widgetAdminData[z]["ID"]}"><i class="fa fa-info" style="font-size:13px;color:#5c8a8a;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Revision History </span></i></a>
+            <a href="javascript:void(0);" class="fileedit-icon" data-index="${widgetAdminData[z]["ID"]}"><i class="fas fa-edit" style="font-size:13px;color:black;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Update Document</span></i></a>
+            <a href="javascript:void(0);" class="book-icon" data-index="${widgetAdminData[z]["ID"]}"><i class="fas fa-book" style="font-size:13px;color:#0088cc;"><span style="font-family: Arial, Helvetica, sans-serif; color: black;font-size:12px;font-weight: normal;">&nbsp;&nbsp;Logs </span></i></a>
         </div>
     `
-});
+                                               });
 
-                                                                
-                                                               
-                                                            }
-        
-                                                        }
-                                                    }
-        
-                                                    var fileManager = $("#filemanager").data("kendoFileManager");
-                                                    fileManager.refresh();
-                                                    fileManager.dataSource.data(subfolderGridData);
-                                                    ssupdateBreadcrumbss(vallevel)
-                                                    hideLoader();
-                                                    //updateBreadcrumbs("folderName");
-                                                    //console.log(subfolderGridData)
-        
-                                                }
-                                                else {
-                                                    
-                                                    console.error("Widget_Admin data is not valid:", widgetAdminResponse);
-                                                    hideLoader();
-                                                }
-                                            }).catch(function (error) {
-                                                var fileManager = $("#filemanager").data("kendoFileManager");
-                                                    fileManager.refresh();
-                                                    fileManager.dataSource.data(subfolderGridData);
-                                                    ssupdateBreadcrumbss(vallevel)
-                                                    hideLoader();
-                                        });
 
-                                                }
-                                            });
-                                                
-                                            } else {
-                                                console.error("Subfolder data is not valid:", subfolderResponse);
-                                                hideLoader();
-                                            }
-                                        });
-                                        }   
-                                        });
-                                //         }).catch(function (error) {
-                                //             console.error("API request error (Folder_Creation_Mapping_Widgets):", error);
-                                //             hideLoader();
-                                //         });
-                                //     }
-                                // });
-                                    
-                                     //}
-                                    // else
-                                    // {
-                                    //        console.log("ci",clickedFolder)
-                                    //         // clickedIndex = '1';
-                                    //         // // breadcrumbs.length = 0;
-                                    //         // // console.log("breadcrumbs in else",breadcrumbs)
-                                    //         // // folderName = null;
-                                    //         // // vpf = null;
-                                    //         // var fileManager = $("#filemanager").data("kendoFileManager");
-                                    //         // fileManager.refresh();
-                                    //         // fileManager.dataSource.data(gridData);
-                                    //         // $("#filemanager .k-filemanager-navigation").html(navigationHtml);
-                                    //         // $(".project-link, .level-link").click(function () {
-                                    //         // $(this).next(".subfolders").toggleClass("show");
-                                    //         //  if (event.target.tagName === 'A') {
-                                             
-                                    //         //  var allid1 = $(this).attr("id");
-                                    //         //  updateBreadcrumbs(allid1);
-                                    //         // //console.log(allid1)
-                                    //         // }
-                                           
-                                    // });
-                                    // clickedFolder = null;
-                                    // $("#filemanager").on("click", ".folder-link", function () {
-                                    //     var folderName = $(this).find(".folder-name").text();
-                                    //     uploadlogic(folderName);
-                                    //     navigateToSubfolder(folderName);
-                                    //      console.log("here folder",folderName)
-                                    // });
-                                            
-                                    // }
-                                }
-        /////////////////////////////////////
-        
-        ////////////////////////////////
-                                  
-        
-        
-                                    $(document).on('click', '.download-icon', function () {
-                                        var dataIndex = $(this).data('index');
-                                        //console.log("dataIndex:", dataIndex);
-                                        var currentindex = dataIndex;
-                                        //console.log("Clicked Download for folder:", currentFolder);
-                                        var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Download_icon_widgets",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
-                                                var infoicon = [];
-        
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                        var diw = {
-                                            reportName: "Download_icon_widgets",
-                                            criteria: "ID!=0" || "ID==0",
-                                            page: pageNumber,
-                                            pageSize: pageSize,
-                                            //fields: "Folder,Status,Created_By,Created_D_T"
-                                        };
-                                        ZOHO.CREATOR.API.getAllRecords(diw).then(function (diwresponse) {
-                                            var downicon = diwresponse.data;
-                                            // console.log(downicon)
-                                            for (let i = 0; i < downicon.length; i++) {
-                                                var dcttitle = downicon[i]["Document_Title"];
-                                                var downprj = downicon[i]["Folder.Project"];
-                                                if (prjj == downprj) {
-                                                    if (currentindex == dcttitle) {
-                                                        downdocup = downicon[i]["Document_Upload"]["display_value"];
-                                                        revisionno = downicon[i]["Revision_No"];
-                                                        if (downdocup != null && revisionno != null) {
-                                                            downloadicon(downdocup, revisionno);
-                                                        }
-        
-                                                        //console.log(downdocup,revisionno)
-                                                    }
-                                                }
-        
-                                            }
-                                        });
-                                    }
-                                    });
-                                    });
-        
-                                    $(document).on('click', '.book-icon', function () {
-                                        var dataIndex = $(this).data('index');
-                                        //console.log("dataIndex:", dataIndex);
-                                        var bookindex = dataIndex;
-                                        //console.log(bookindex);
-        
-                                        var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Book_Widgets",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
-                                                var bookicon = [];
-        
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                                    var biw = {
-                                                        reportName: "Book_Widgets",
-                                                        criteria: "ID!=0" || "ID==0",
-                                                        page: pageNumber,
-                                                        pageSize: pageSize,
-                                                    };
-        
-                                                    ZOHO.CREATOR.API.getAllRecords(biw)
-                                                        .then(function (biwresponse) {
-                                                            var records = biwresponse.data;
-                                                            bookicon = bookicon.concat(records);
-                                                            //console.log("Fetched all records:", bookicon);
-        
-                                                            for (let i = 0; i < bookicon.length; i++) {
-                                                                var dcttitle = bookicon[i]["Document_Title"];
-                                                                var booprj = bookicon[i]["Project"]["display_value"];
-                                                                if (booprj == prjj) {
-                                                                    if (bookindex == dcttitle) {
-                                                                        bookdup = bookicon[i]["Document_Upload1"]["display_value"];
-                                                                        //console.log(bookdup);
-                                                                        if (bookdup != null) {
-                                                                            boookkicons(bookdup);
-                                                                            //console.log(bookdup);
-                                                                            // break;
-                                                                        }
-        
-                                                                    }
-                                                                }
-        
-                                                            }
-                                                        });
-        
-                                                }
-                                            });
-        
-        
-        
-                                    });
-                                    $(document).on('click', '.comments-icon', function () {
-                                        var dataIndex = $(this).data('index');
-                                        //console.log("dataIndex:", dataIndex);
-                                        var commentindex = dataIndex;
-                                        //console.log(bookindex);
-        
-                                        var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Comment_Resolution_Widgets",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
-                                                var commenticon = [];
-        
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                                    var coi = {
-                                                        reportName: "Comment_Resolution_Widgets",
-                                                        criteria: "ID!=0" || "ID==0",
-                                                        page: pageNumber,
-                                                        pageSize: pageSize,
-                                                    };
-        
-                                                    ZOHO.CREATOR.API.getAllRecords(coi)
-                                                        .then(function (coiresponse) {
-                                                            var records = coiresponse.data;
-                                                            commenticon = commenticon.concat(records);
-        
-        
-                                                            for (let i = 0; i < commenticon.length; i++) {
-                                                                var comtitle = commenticon[i]["Document_Drawing_Title"];
-                                                                var comprj = commenticon[i]["Document_Upload.Project"];
-                                                                if (comprj == prjj) {
-                                                                    if (commentindex == comtitle) {
-                                                                        comdup = commenticon[i]["Document_Upload"]["display_value"];
-        
-        
-                                                                        commenttssicons(comdup);
-        
-                                                                        // break;
-        
-        
-                                                                    }
-                                                                }
-        
-                                                            }
-                                                        });
-        
-                                                }
-                                            });
-        
-        
-        
-                                    });
-                                    $(document).on('click', '.info-icon', function () {
-                                        var dataIndex = $(this).data('index');
-                                        //console.log("dataIndex:", dataIndex);
-                                        var infoindex = dataIndex;
-                                        //console.log(bookindex);
+
+                                             }
+
+                                           }
+                                         }
+//                                          
+                                         //console.log(subfolderGridData)
+                                         var fileManager = $("#filemanager").data("kendoFileManager");
+                                         fileManager.refresh();
+                                         fileManager.dataSource.data(subfolderGridData);
+
+                                         ssupdateBreadcrumbss(vallevel)
+                                         
+                                         hideLoader();
+                                         //updateBreadcrumbs("folderName");
+                                         //console.log(subfolderGridData)
+
+                                       } else {
                                         
-                                        var config = {
-                                            appName: "ern-pmis",
-                                            reportName: "Download_icon_widgets",
-                                        };
-        
-                                        ZOHO.CREATOR.API.getRecordCount(config)
-                                            .then(function (response) {
-                                                var rescount = parseInt(response.result.records_count)
-                                                var pageSize = 200;
-                                                var totalPages = Math.ceil(rescount / pageSize);
-                                                var infoicon = [];
-        
-                                                for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                                    var ini = {
-                                                        reportName: "Download_icon_widgets",
-                                                        criteria: "ID!=0" || "ID==0",
-                                                        page: pageNumber,
-                                                        pageSize: pageSize,
-                                                    };
-        
-                                                    ZOHO.CREATOR.API.getAllRecords(ini)
-                                                        .then(function (iniresponse) {
-                                                            var records = iniresponse.data;
-                                                            infoicon = infoicon.concat(records);
-                                                            //console.log(infoicon);
-        
-                                                            for (let i = 0; i < infoicon.length; i++) {
-                                                                var inftitle = infoicon[i]["Document_Title"];
-                                                                var infprj = infoicon[i]["Folder.Project"];
-                                                                if (prjj == infprj) {
-                                                                    if (infoindex == inftitle) {
-                                                                        infdocup = infoicon[i]["Document_Upload"]["display_value"];
-        
-                                                                        if (infdocup != null) {
-                                                                            inffooicon(infdocup);
-                                                                        }
-        
-        
-                                                                    }
-                                                                }
-        
-                                                            }
-        
-                                                        });
-        
-                                                }
-                                            });
-        
-        
-        
-                                    });
-                                    $(document).on('click', '.childedit-icon', function () {
-                                        var dataIndex = $(this).data('index');
-                                        var cediticon = dataIndex;
-                                       //console.log("clickedFolder",cediticon);
-                                        // var config = {
-                                        //     appName: "ern-pmis",
-                                        //     reportName: "Folder_Creation_Mapping_Widgets",
-                                        // };
-        
-                                        // ZOHO.CREATOR.API.getRecordCount(config)
-                                        //     .then(function (response) {
-                                        //         var rescount = parseInt(response.result.records_count)
-                                        //         var pageSize = 200;
-                                        //         var totalPages = Math.ceil(rescount / pageSize);
-                                        //         var chiediicon = [];
-        
-                                        //         for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-                                        //             var chi = {
-                                        //                 reportName: "Folder_Creation_Mapping_Widgets",
-                                        //                 criteria: "ID!=0" || "ID==0",
-                                        //                 page: pageNumber,
-                                        //                 pageSize: pageSize,
-                                        //             };
-        
-                                        //             ZOHO.CREATOR.API.getAllRecords(chi)
-                                        //                 .then(function (chiresponse) {
-                                                            var chiediicon = fcmd;
-                                                            //console.log(chiediicon);
-        
-                                                            for (let i = 0; i < chiediicon.length; i++) {
-                                                                var cfol = chiediicon[i]["ID"];
-                                                                var cfprj = chiediicon[i]["Project"]["display_value"]
-                                                                //console.log(cfol);
-                                                                if (prjj == cfprj) {
-                                                                    if (cediticon == cfol) {
-                                                                                                                                               
-                                                                        chpfi = chiediicon[i]["Parent_Folder"]["ID"];
-                                                                        chid = chiediicon[i]["ID"];
-                                                                        //console.log(chpfi,chid)
-                                                                        if (chpfi != null && chid != null) {
-                                                                            childediticon(chpfi, chid);
-                                                                        }
-        
-                                                                    }
-                                                                }
-                                                            }
-        
-                                            //             });
-                                            //     }
-                                            // });
-        
-        
-                                    });
-                                });
-                            }
-                        });
-                            });
-                            
-                        });
-                        
-                    });
-               
-                });
-        
-        
-        
-        
-            
-        
-    </script>
-    <script>
-         
-var openPopupMenu = null;
-document.addEventListener("click", function (event) {
-       if (event.target !== openPopupMenu && !event.target.classList.contains("iconsss")) {
-        if (openPopupMenu) {
-            openPopupMenu.style.display = "none"; 
-        }
-    }
-});
-function togglePopupMenu(icon) {
-    var popupMenu = icon.nextElementSibling; 
-        if (popupMenu.style.display === "block") {
-        popupMenu.style.display = "none";
-        openPopupMenu = null;
-    } else {
-        if (openPopupMenu) {
-            openPopupMenu.style.display = "none"; 
-        }
-        popupMenu.style.display = "block";
-        openPopupMenu = popupMenu;
-    }
-}
+                                        console.log("WidgetAdmin data not valid" , widgetAdminResponse)
+                                        var fileManager = $("#filemanager").data("kendoFileManager");
+                                       fileManager.refresh();
+                                       fileManager.dataSource.data(subfolderGridData);
+                                       ssupdateBreadcrumbss(vallevel);
+                                         hideLoader();
+                                       }
+                                     }).catch(function (error) {
+                                       var fileManager = $("#filemanager").data("kendoFileManager");
+                                       fileManager.refresh();
+                                       fileManager.dataSource.data(subfolderGridData);
+                                       ssupdateBreadcrumbss(vallevel);
+                                       hideLoader();
+                                     });
 
-        
-              window.onclick = function(event) {
-            var popupMenu = document.getElementById("popupMenu");
-            if (event.target !== popupMenu && !event.target.classList.contains("iconsss")) {
-                // popupMenu.style.display = "none";
-            }
-        }
-    </script>
+                                   }
+                                 });
+                                
+                             } else {
+                               console.error("Subfolder data is not valid:", subfolderResponse);
+                               hideLoader();
+                             }
+                           });
+                         }
+                       });
+                     
+                   }
+                   /////////////////////////////////////
+
+                   ////////////////////////////////
+
+
+
+                   $(document).on('click', '.download-icon', function () {
+                     var dataIndex = $(this).data('index');
+                     //console.log("dataIndex:", dataIndex);
+                     var currentindex = dataIndex;
+                     //console.log("Clicked Download for folder:", currentFolder);
+                     var config = {
+                       appName: "pmis-lite",
+                       reportName: "Download_icon_widgets",
+                     };
+
+                     ZOHO.CREATOR.API.getRecordCount(config)
+                       .then(function (response) {
+                         var rescount = parseInt(response.result.records_count)
+                         var pageSize = 200;
+                         var totalPages = Math.ceil(rescount / pageSize);
+                         var infoicon = [];
+
+                         for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                           var diw = {
+                             reportName: "Download_icon_widgets",
+                             criteria: "ID!=0" || "ID==0",
+                             page: pageNumber,
+                             pageSize: pageSize,
+                             //fields: "Folder,Status,Created_By,Created_D_T"
+                           };
+                           ZOHO.CREATOR.API.getAllRecords(diw).then(function (diwresponse) {
+                             var downicon = diwresponse.data;
+                              //console.log(downicon)
+                             for (let i = 0; i < downicon.length; i++) {
+                               var dcttitle = downicon[i]["New_Upload_ID"]["ID"];
+                               var downprj = downicon[i]["Folder.Project"];
+                               if (prjj == downprj) {
+                                 if (currentindex == dcttitle) {
+                                   downdocup = downicon[i]["Document_Upload"]["display_value"];
+                                   revisionno = downicon[i]["Revision_No"];
+                                   if (downdocup != null && revisionno != null) {
+                                     downloadicon(downdocup, revisionno);
+                                   }
+
+                                   //console.log(downdocup,revisionno)
+                                 }
+                               }
+
+                             }
+                           });
+                         }
+                       });
+                   });
+
+                   $(document).on('click', '.book-icon', function () {
+                     var dataIndex = $(this).data('index');
+                     //console.log("dataIndex:", dataIndex);
+                     var bookindex = dataIndex;
+                     //console.log(bookindex);
+                     boookkicons(bookindex);
+                
+                    //  var config = {
+                    //    appName: "pmis-lite",
+                    //    reportName: "Book_Widgets",
+                    //  };
+
+                    //  ZOHO.CREATOR.API.getRecordCount(config)
+                    //    .then(function (response) {
+                    //      var rescount = parseInt(response.result.records_count)
+                    //      var pageSize = 200;
+                    //      var totalPages = Math.ceil(rescount / pageSize);
+                    //      var bookicon = [];
+
+                    //      for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                    //        var biw = {
+                    //          reportName: "Book_Widgets",
+                    //          criteria: "ID!=0" || "ID==0",
+                    //          page: pageNumber,
+                    //          pageSize: pageSize,
+                    //        };
+
+                    //        ZOHO.CREATOR.API.getAllRecords(biw)
+                    //          .then(function (biwresponse) {
+                    //            var records = biwresponse.data;
+                    //            bookicon = bookicon.concat(records);
+                    //            //console.log("Fetched all records:", bookicon);
+                    //            boookkicons(bookindex);
+                    //           //  for (let i = 0; i < bookicon.length; i++) {
+                    //           //    var dcttitle = bookicon[i]["Document_Upload1"]["display_value"];
+                    //           //    var booprj = bookicon[i]["Project"]["display_value"];
+                    //           //    if (booprj == prjj) {
+                    //           //      if (bookindex == dcttitle) {
+                    //           //        bookdup = bookicon[i]["Document_Upload1"]["display_value"];
+                    //           //        //console.log(bookdup);
+                    //           //        if (bookdup != null) {
+                    //           //          boookkicons(bookdup);
+                    //           //          //console.log(bookdup);
+                    //           //          // break;
+                    //           //        }
+
+                    //           //      }
+                    //           //    }
+
+                    //           //  }
+                    //          });
+
+                    //      }
+                    //    });
+
+
+
+                   });
+
+                   $(document).on('click', '.crs-icon', function () {
+                     var dataIndex = $(this).data('index');
+                     //console.log("dataIndex:", dataIndex);
+                     var commentindex = dataIndex;
+                    // console.log("commentindex");
+                    commenttssicons(commentindex);
+
+                    //  var config = {
+                    //    appName: "pmis-lite",
+                    //    reportName: "Comment_Resolution_Widgets",
+                    //  };
+
+                    //  ZOHO.CREATOR.API.getRecordCount(config)
+                    //    .then(function (response) {
+                    //      var rescount = parseInt(response.result.records_count)
+                    //      var pageSize = 200;
+                    //      var totalPages = Math.ceil(rescount / pageSize);
+                    //      var commenticon = [];
+
+                    //      for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                    //        var coi = {
+                    //          reportName: "Comment_Resolution_Widgets",
+                    //          criteria: "ID!=0" || "ID==0",
+                    //          page: pageNumber,
+                    //          pageSize: pageSize,
+                    //        };
+
+                    //        ZOHO.CREATOR.API.getAllRecords(coi)
+                    //          .then(function (coiresponse) {
+                    //            var records = coiresponse.data;
+                    //            commenticon = commenticon.concat(records);
+
+
+                    //            for (let i = 0; i < commenticon.length; i++) {
+                    //              var comtitle = commenticon[i]["Document_Drawing_Title"];
+                    //              var comprj = commenticon[i]["Document_Upload.Project"];
+                    //              if (comprj == prjj) {
+                    //                if (commentindex == comtitle) {
+                    //                  comdup = commenticon[i]["Document_Upload"]["display_value"];
+
+
+                    //                  commenttssicons(comdup);
+
+                    //                  // break;
+
+
+                    //                }
+                    //              }
+
+                    //            }
+                    //          });
+
+                    //      }
+                    //    });
+
+
+
+                   });
+
+
+                   $(document).on('click', '.info-icon', function () {
+                     var dataIndex = $(this).data('index');
+                     //console.log("dataIndex:", dataIndex);
+                     var infoindex = dataIndex;
+                     inffooicon(infoindex);
+                      //console.log(groupmaster)
+                      
+
+                   
+                    //  var config = {
+                    //    appName: "pmis-lite",
+                    //    reportName: "Download_icon_widgets",
+                    //  };
+
+                    //  ZOHO.CREATOR.API.getRecordCount(config)
+                    //    .then(function (response) {
+                    //      var rescount = parseInt(response.result.records_count)
+                    //      var pageSize = 200;
+                    //      var totalPages = Math.ceil(rescount / pageSize);
+                    //      var infoicon = [];
+
+                    //      for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                    //        var ini = {
+                    //          reportName: "Download_icon_widgets",
+                    //          criteria: "ID!=0" || "ID==0",
+                    //          page: pageNumber,
+                    //          pageSize: pageSize,
+                    //        };
+
+                    //        ZOHO.CREATOR.API.getAllRecords(ini)
+                    //          .then(function (iniresponse) {
+                    //            var records = iniresponse.data;
+                    //            infoicon = infoicon.concat(records);
+                    //            console.log(infoicon);
+
+                    //            for (let i = 0; i < infoicon.length; i++) {
+                    //              var inftitle = infoicon[i]["Document_Title"];
+                    //              var infprj = infoicon[i]["Folder.Project"];
+                    //              if (prjj == infprj) {
+                    //                if (infoindex == inftitle) {
+                    //                  infdocup = infoicon[i]["Document_Upload"]["display_value"];
+
+                    //                  if (infdocup != null) {
+                    //                    inffooicon(infdocup);
+                    //                  }
+
+
+                    //                }
+                    //              }
+
+                    //            }
+
+                    //          });
+
+                    //      }
+                    //    });
+
+
+
+                   });
+                   $(document).on('click', '.reference-icon', function () {
+                    var dataIndex = $(this).data('index');
+                      refericons = dataIndex;
+                     refericon(refericons)
+
+                   });
+                   $(document).on('click', '.childedit-icon', function () {
+                     var dataIndex = $(this).data('index');
+                     var cediticon = dataIndex;
+                     
+                     var chiediicon = fcmd;
+                     
+                     for (let i = 0; i < chiediicon.length; i++) {
+                       var cfol = chiediicon[i]["ID"];
+                       var cfprj = chiediicon[i]["Project"]["display_value"]
+                       //console.log(cfol);
+                       if (prjj == cfprj) {
+                         if (cediticon == cfol) {
+
+                           chpfi = chiediicon[i]["Parent_Folder"]["ID"];
+                           chid = chiediicon[i]["ID"];
+                           //console.log(chpfi,chid)
+                           if (chpfi != null && chid != null) {
+                             childediticon(chpfi, chid);
+                           }
+
+                         }
+                       }
+                     }
+
+                     
+
+                   });
+
+                   $(document).on('click', '.fileedit-icon', function () {
+                     var dataIndex = $(this).data('index');
+                   // console.log(dataIndex)
+                    var config = {
+                                 appName: "pmis-lite",
+                                 reportName: "New_Upload_Report_Widgets",
+                               };
+
+                               ZOHO.CREATOR.API.getRecordCount(config)
+                                 .then(function (response) {
+                                   var rescount = parseInt(response.result.records_count)
+                                   var pageSize = 200;
+                                   var totalPages = Math.ceil(rescount / pageSize);
+
+
+                                   for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                                     var fileuploaddata = {
+                                       reportName: "New_Upload_Report_Widgets",
+                                       criteria: "ID!=0",
+                                       page: pageNumber,
+                                       pageSize: pageSize,
+                                     };
+                                     ZOHO.CREATOR.API.getAllRecords(fileuploaddata).then(function (fileuploaddataresponse) {
+                                             var fileresponseupdate = fileuploaddataresponse.data;
+                                             //console.log(fileresponseupdate)
+                                          for (let i = 0; i < fileresponseupdate.length; i++) {
+                                            var updateid = fileresponseupdate[i]["ID"];
+                                            if(updateid == dataIndex)
+                                            {
+                                              var fileidss = fileresponseupdate[i]["ID"];
+                                              var createdby = fileresponseupdate[i]["Created_By"];
+                                              var filestatus = fileresponseupdate[i]["Status.Status_Type"];
+                                             
+                                              for (let j = 0; j < usercreation.length; j++) {
+                                                var username = usercreation[j]["Name"];
+                                                if(username == createdby)
+                                                {
+                                                  var initparams = ZOHO.CREATOR.UTIL.getInitParams();
+                                                  var emails = usercreation[j]["E_Mail"];
+                                                  if((emails == initparams.loginUser && filestatus=="Actionable") || ((createdby == "Super Admin" && filestatus=="Actionable") || (createdby == "Admin" && filestatus=="Actionable")) )
+                                                  {
+                                                    
+                                                    var config = {
+                                                      appName: "pmis-lite",
+                                                      reportName: "Download_icon_widgets",
+                                                    };
+
+                                                    ZOHO.CREATOR.API.getRecordCount(config)
+                                                      .then(function (response) {
+                                                        var rescount = parseInt(response.result.records_count)
+                                                        var pageSize = 200;
+                                                        var totalPages = Math.ceil(rescount / pageSize);
+                                                        var infoicon = [];
+
+                                                          for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                                                            var ini = {
+                                                              reportName: "Download_icon_widgets",
+                                                              criteria: "ID!=0" || "ID==0",
+                                                              page: pageNumber,
+                                                              pageSize: pageSize,
+                                                            };
+
+                                                            ZOHO.CREATOR.API.getAllRecords(ini)
+                                                              .then(function (iniresponse) {
+                                                                var records = iniresponse.data;
+                                                                  //console.log(records)
+                                                                for (let k = 0; k < records.length; k++) {
+                                                                  var docuupload = records[k]["Document_Upload"]["ID"];
+                                                                  if(fileidss == docuupload)
+                                                                  {
+                                                                   // console.log(fileidss)
+                                                                    var filesdocumnetupload = fileresponseupdate[i]["Document_Management_History.Document_Upload1"];
+                                                                    var fileid = fileresponseupdate[i]["ID"];
+                                                                    var documenttitles = fileresponseupdate[i]["Document_Title"];
+                                                                    var fileuploadproject = fileresponseupdate[i]["Project"]["ID"];
+                                                                    var fileuploadparentid = fileresponseupdate[i]["Folder"]["ID"];
+                                                                    var revisionuploadno = fileresponseupdate[i]["Revision_No"];
+                                                                    var uploadcreatedby = fileresponseupdate[i]["Created_By"];
+                                                                    var uploadcreateddt = fileresponseupdate[i]["Created_D_T"];
+
+                                                                    var uploadfiletype = records[k]["File_Type"];
+                                                                    var uploaddcoumno = records[k]["Document_No"];
+                                                                    var uploaddwgcad = records[k]["Drawing_CAD"];
+                                                                    var uploadcoad = records[k]["Code"]["ID"];
+                                                                    var signeddocumentupload = records[k]["Signed_Documnet"];
+                                                                    var revisionnonumber = records[k]["Revision_No_Number"];
+                                                                    var originatedfrom = records[k]["Originated_from"]["ID"];
+                                                                    var documentuploadidd = records[k]["ID"];
+                                                                    var uploadstatus = records[k]["Upload_Status"];
+                                                                    var uploadedfiles = records[k]["Upload_File1"];
+                                                                    var parts = uploadedfiles.split("filepath=");
+                                                                    if (parts.length === 2) {
+                                                                        var filepath = parts[1];
+                                                                        
+                                                                        var updatedfilesopen = "https://creatorapp.zoho.in/faridabadpmislite/environment/development/pmis-lite/#form:Update_Document_Drawing?zc_LoadIn=dialog";
+                                                                        updatedfilesopen += "&Document_Upload=" + encodeURIComponent(filesdocumnetupload);
+                                                                        updatedfilesopen += "&New_Upload_ID=" + encodeURIComponent(fileid);
+                                                                        updatedfilesopen += "&Upload_File1=" + encodeURIComponent(filepath);
+                                                                        updatedfilesopen += "&Drawing_CAD=" + encodeURIComponent(uploaddwgcad);
+                                                                        updatedfilesopen += "&Document_Title=" + encodeURIComponent(documenttitles);
+                                                                        updatedfilesopen += "&Code=" + encodeURIComponent(uploadcoad);
+                                                                        updatedfilesopen += "&File_Type=" + encodeURIComponent(uploadfiletype);
+                                                                        updatedfilesopen += "&Document_No=" + encodeURIComponent(uploaddcoumno);
+                                                                        updatedfilesopen += "&Revision_No=" + encodeURIComponent(revisionuploadno);
+                                                                        updatedfilesopen += "&Revision_No_Number=" + encodeURIComponent(revisionnonumber);
+                                                                        updatedfilesopen += "&Uploaded_By=" + encodeURIComponent(uploadcreatedby);
+                                                                        updatedfilesopen += "&Uploaded_D_T=" + encodeURIComponent(uploadcreateddt);
+                                                                        updatedfilesopen += "&Signed_Document=" + encodeURIComponent(signeddocumentupload);
+                                                                        updatedfilesopen += "&Upload_Status=" + encodeURIComponent(uploadstatus);
+                                                                        updatedfilesopen += "&Originated_from=" + encodeURIComponent(originatedfrom);
+                                                                        updatedfilesopen += "&Document_Upload_New_Upload=" + encodeURIComponent(documentuploadidd);
+                                                                        updatedfilesopen += "&Project=" + encodeURIComponent(fileuploadproject);
+                                                                        updatedfilesopen += "&Parent_Folder=" + encodeURIComponent(fileuploadparentid);
+
+                                                                        window.open(updatedfilesopen, "_parent");
+                                                                    } else {
+                                                                        console.log("Invalid URL format");
+                                                                    }
+
+
+
+
+
+
+                                                                  }
+                                                                  
+                                                                }
+                                                              });
+                                                              }
+                                                            });
+                                                    
+
+
+                                                  }
+                                                  else
+                                                  {
+                                                    $(".custom-model-main").addClass('model-open');
+                                                  }
+                                                }
+                                                
+                                              }
+                                            }
+                                          }
+
+                                     });
+                                    }
+                                  });
+                    
+                   });
+
+
+
+                 });
+               }
+             });
+         });
+
+       });
+
+     });
+
+   });
+
+
+
+
+
+
+ </script>
+  <script >
+
+   var openPopupMenu = null;
+ document.addEventListener("click", function (event) {
+   if (event.target !== openPopupMenu && !event.target.classList.contains("iconsss")) {
+     if (openPopupMenu) {
+       openPopupMenu.style.display = "none";
+     }
+   }
+ });
+
+ function togglePopupMenu(icon) {
+   var popupMenu = icon.nextElementSibling;
+   if (popupMenu.style.display === "block") {
+     popupMenu.style.display = "none";
+     openPopupMenu = null;
+   } else {
+     if (openPopupMenu) {
+       openPopupMenu.style.display = "none";
+     }
+     popupMenu.style.display = "block";
+     openPopupMenu = popupMenu;
+   }
+ }
+
+
+ window.onclick = function (event) {
+     var popupMenu = document.getElementById("popupMenu");
+     if (event.target !== popupMenu && !event.target.classList.contains("iconsss")) {
+       // popupMenu.style.display = "none";
+     }
+   } 
+   </script>
     </div>
 </body>
 
